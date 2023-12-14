@@ -1,0 +1,172 @@
+div[role="roundprogressbar"] {
+  --size: 11rem;
+  --fg: rgb(248 87 110);
+  --bg: #def;
+  --pgPercentage: var(--value);
+  animation: growProgressBar 3s 1 forwards;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(closest-side, white 80%, transparent 0 99.9%, white 0),
+    conic-gradient(from 90deg, var(--fg) calc(var(--pgPercentage) * 3.6deg), var(--bg) 0);
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: calc(var(--size) / 5);
+  color: var(--fg);
+}
+
+    @keyframes growProgressBar {
+      0%, 33% { --pgPercentage: 0; }
+      100% { --pgPercentage: var(--value); }
+    }
+    div[role="roundprogressbar"]::before {
+        counter-reset: percentage var(--value);
+        content: counter(percentage) '%';
+        display: block;
+        margin-bottom: -6rem;
+        margin-top: -1rem;
+      }
+      
+      div[role="roundprogressbar"]::after {
+        content: "COMPLETED";
+        display: block;
+        text-align: center;
+        margin-top: -3rem;
+        font-size: small;
+        color: black;
+      }
+      
+  @property --pgPercentage {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+  }
+  .roundprogress-text {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-top: rem;
+    }
+
+    .card-title {
+      padding: 0px 0 0px 0;
+      font-size: 14px;
+      font-weight: 500;
+      color: #000;
+      font-feature-settings: 'clig' off, 'liga' off;
+      font-family: DM Sans;
+      font-size: 16px;
+      font-style: normal;
+      line-height: 20px; /* 125% */
+  }
+  /* .time-consumed{
+    margin-top: -53%;
+  } */
+  .number-color{
+    background-image: linear-gradient(179.84deg, #F857A6 -36.18%, #FF5858 94.04%);
+    background-clip: text;
+    -webkit-background-clip: text; /* For older webkit browsers */
+    color: transparent; /* Make the original text transparent */
+  }
+
+  .outer-card {
+    width: 100%; /* Make the outer card full width */
+    max-width: 557px; /* Set a maximum width for the outer card */
+    border-radius: 10px;
+    background-color: #ffffff;
+    padding: 20px;
+    height: auto; /* Make the outer card height responsive based on content */
+    border: none;
+    
+  }
+
+  .allotted-members {
+    color: #000000;
+    font: 500 16px/20px "DM Sans", sans-serif;
+  }
+
+  .view-all {
+    color: #000000;
+    text-align: left;
+    font: 400 14px/20px "DM Sans", sans-serif;
+  }
+
+  .inner-card {
+    width: 212px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    border:none;
+  }
+
+  .ellipse-9 {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    margin-right: 10px;
+  }
+
+  .inner-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100px; /* Adjust the width as needed */
+    margin-left: -12px; 
+  }
+
+
+.card-title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%; /* Allow the name to take the full width if it's shorter */
+}
+
+.silna-anil {
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0px;
+  margin-top: 28%;
+}
+
+.project-lead {
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0px;
+  margin-top: 6%;
+  opacity: 0.5;
+}
+
+._200-hrs {
+  color: #574EE9;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 17px;
+  margin-top: 12%;
+}
+  .hour_icon{
+    margin-bottom: 5%;
+  }
+
+  @media (max-width: 576px) {
+    .custom-card {
+      overflow: auto; /* Apply overflow-auto for small screens (sm and below) */
+    }
+  }

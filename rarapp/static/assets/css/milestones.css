@@ -1,0 +1,137 @@
+
+  /* custom-styles.css */
+.custom-container {
+    margin-top: 5rem;
+  }
+  
+  .custom-card-header {
+    font-weight: bold;
+  }
+  
+  .custom-label {
+    font-weight: bold;
+  }
+  
+  .custom-card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .custom-form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  
+  .custom-form-group {
+    flex: 1;
+    margin: 0 1rem;
+  }
+  
+  .custom-form-control {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  .custom-btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+.phase-title{
+  color: #000;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 83.333% */
+}
+.rel-text{
+  color: #000;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 125% */
+opacity: 0.5;
+}
+.rel-subtext{
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 125% */
+}
+.task-text{
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 111.111% */
+  opacity: 0.6;
+  display: inline-block;
+}
+.task-subtext{
+  color: #000;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 20px;
+font-style: normal;
+font-weight: 700;
+line-height: 20px; /* 100% */
+display: inline-block;
+}
+
+.percent-text{
+  color: #000;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 18px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 111.111% */
+opacity: 0.6;
+}
+
+.view-text{
+  color: #949494;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 125% */
+}
+@media (max-width: 992px) {
+  .custom-form-row {
+    flex-direction: column;
+  }
+
+  .custom-form-group {
+    margin: 0;
+  }
+}
+.custom-overflow {
+  overflow-x: auto; /* Add any desired overflow behavior here */
+}
+
+@media (max-width:424px){
+.req-btn{
+ display: none;
+}
+}

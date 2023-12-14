@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Favicons -->
+  <link href="{% static 'assets/img/aindriya.png' %}" rel="icon">
+  <link href="{% static 'assets/img/aindriya.png' %}" rel="aindriya-icon">
+    <title>Register Page</title>
+    <link rel="stylesheet" href="{% static 'assets/css/register.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+ <!--Load Spinner -->
+ <div class="custom-spinner">
+    <div class="loader"></div>
+  </div>
+  
+
+    <div class="container">
+        <div class="form-container">
+            <div class="register-form">
+                <div class="logo">
+                    <span style="display: inline-block;">
+                        <img src="{% static 'assets/img/aindriya.png' %}" alt="" srcset="">
+                    </span>
+                    <span style="display: inline-block; text-align: left;"><b>A</b>indriya<br><b>M</b>anagement<br><b>S</b>oftware</span>
+                </div>
+    
+                <h2>New Registration</h2>
+                <form action="{% url 'register' %}" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <select name="position" required placeholder="Select Your Position">
+                        <option value="" disabled selected >Select Your Position</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Project Manager">Project Manager</option>
+                    </select>                                      
+                    <input type="password" name="password1" placeholder="Create Password" required>
+                    <input type="password" name="password2" placeholder="Re-enter Password" required>
+                    <button type="submit" class="log-style gradient-color">Register</button>
+                    <div class="d-flex align-items-center " >
+                        <span class="new-text">Already have an account?</span>
+                        <a href="{% url 'login' %}" style="text-decoration: none;" class="reg-text">Login Now</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="image-container">
+            <img src="{% static 'assets/img/Frame.png' %}" alt="" srcset="" style="width: 200%; height: auto; max-width: 500px;">
+            
+        </div>
+    </div>
+    
+    <script>
+        window.addEventListener("load", function () {
+          document.querySelector('.custom-spinner').style.display = 'none';
+        });
+      </script>
+      
+    
+</body>
+</html>

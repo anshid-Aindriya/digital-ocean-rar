@@ -1,0 +1,1186 @@
+#main{
+      margin: 0;
+  margin-top: 60px;
+  padding: 20px 30px;
+  transition: all 0.3s;
+  background-color: #ffff;
+}
+.req-btn{
+  background-image: linear-gradient(to right, #4776E6, #8E54E9);
+  width: 182px;
+height: 40px;
+flex-shrink: 0;
+border-radius: 5px;
+margin-left: 23.7%;
+  border: none;
+}
+@media screen and (max-width: 1240px){
+  .req-btn {
+      margin-left: 22%;
+  }
+  }
+  @media screen and (max-width: 1098px) {
+    .req-btn {
+      margin-left: 3%;
+    }
+  }
+  @media screen and (max-width: 992px) {
+    .req-btn {
+      margin-left: 0%;
+    }
+  }
+  @media screen and (max-width: 769px){
+    .req-btn {
+        margin-left: 15%;
+        margin-top: 10px;
+    }
+
+}
+@media screen and (max-width: 1024px){
+  .req-btn {
+    margin-left: 14%;
+  }
+
+}
+
+
+@media screen and (min-width: 1300px) {
+  .req-btn {
+    margin-left: 21.2%; 
+  height:48px
+  }
+}
+
+@media screen and (min-width: 1500px){
+  .req-btn {
+    margin-left: 34.2%;
+    height: 44px;
+  }
+}
+@media screen and (min-width: 1700px){
+  .req-btn {
+    margin-left: 32.2%;
+    height: 50px;
+  }
+}
+@media screen and (min-width: 1900px){
+.req-btn {
+    margin-left: 41.2%;
+    height: 50px;
+}
+}
+@media screen and (min-width: 2100px){
+  .req-btn {
+      margin-left: 49.2%;
+      height: 50px;
+  }
+}
+@media screen and (min-width: 3000px){
+.req-btn {
+    width: 197px;
+    margin-left: 64.2%;
+    height: 52px;
+}
+}
+  
+
+
+
+.req-text{
+  color: #FFF;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 14px;
+font-style: normal;
+font-weight: 700;
+line-height: 17px; /* 121.429% */
+}
+@media screen and (max-width: 1198px) {
+  .req-text{
+    font-size: 13px;
+  }
+}
+.favorite-btn {
+  width: 157px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 5px;
+border: 1px solid #4941CD;
+background: #FBFBFB;
+}
+@media screen and (max-width: 1198px) {
+  .favorite-btn {
+    width: 136px;
+  }
+}
+@media screen and (max-width: 967px) {
+  .favorite-btn  {
+    width: 164px;
+    height:38px;
+    margin-top: 10px;
+  }
+  }
+  @media screen and (max-width: 426px){
+.req-btn {
+    margin-left: 3%;
+}}
+  @media screen and (max-width: 426px){
+  .favorite-btn {
+      width: 140px;
+
+  }
+}
+@media screen and (min-width: 1300px) {
+  .favorite-btn  {
+    width: 157px;
+    height: 50px;
+  }
+}
+@media screen and (min-width: 1500px) {
+  .favorite-btn  {
+    width: 157px;
+    height: 47px;
+  }
+}
+@media screen and (min-width: 2300px){
+.favorite-btn {
+    width: 175px;
+    height: 47px;
+}
+}
+.favorite-text{
+  color: #4941CD;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 125% */
+margin-left: 20%;
+}
+@media screen and (max-width: 1198px) {
+  .favorite-text{
+    font-size: 13px;
+  }
+}
+
+.card-container {
+    position: relative;
+    width: 218px;
+    height: 265px;
+  }
+  @media screen and (max-width: 520px) {
+  .card-container {
+    width: 499px;
+}
+    }
+
+.card-rad{
+    border-radius: 20px;
+    
+  }
+
+ 
+
+  
+  .dot-icon {
+    width: 20px; /* Adjust the size as needed */
+    height: 20px; /* Adjust the size as needed */
+    margin-top: 8px; /* Adjust the margin as needed */
+    margin-left: 9px;
+  }
+
+  .profile-image {
+    background-color: #FB508F; /* Set the background color */
+    color: white; /* Set the text color */
+    border-radius: 50%; /* Make it round */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    position: absolute;
+    top: -12px;
+    left: -15px;
+    z-index: 2;
+    object-fit: cover;
+    
+  }
+  
+  .round-color {
+    width: 60px;
+    height: 60px;
+  }
+  .user-profile-image {
+    height: 40px;
+    background-color: #0859db; /* Set the background color */
+    color: white; /* Set the text color */
+    border-radius: 50%; /* Make it round */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .user-profile {
+    width: 30px;
+    height: 50px;
+}
+  .user-initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    font-size: 27px;
+  }
+  
+  .initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    font-size: 24px;
+  }
+  
+  .dot-icon {
+    width: 20px; /* Adjust the size as needed */
+    height: 20px; /* Adjust the size as needed */
+    margin-top: 8px; /* Adjust the margin as needed */
+    margin-left: 9px;
+  }
+  .create-div {
+    opacity: 0.50;
+    color: black;
+    font-size: 9px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    word-wrap: break-word;
+    margin-left: 35px;
+    display: flex; /* Use flexbox to control layout */
+    flex-direction: column; /* Stack the text vertically */
+    align-items: flex-start; /* Align text to the left */
+}
+
+
+
+
+
+  .BidWinner {
+    color: black;
+    font-size: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    line-height: 20px;
+    word-wrap: break-word;
+    margin-top: 32px; /* Adjust the margin as needed */
+    
+  }
+  hr {
+    margin: 0.5rem 0;
+    color: inherit;
+    border: 0;
+    border-top: var(--bs-border-width) solid;
+    opacity: .25;
+}
+
+  .button-due {
+    font-size: 12px;
+    color: black;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    line-height: 15px;
+    opacity: 0.40;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: right;
+  
+  }
+  .button-date {
+    color: #000;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: DM Sans;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 15px; /* 100% */
+  
+  }
+  .button-start {
+    color: #000;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: DM Sans;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 15px; /* 150% */
+    opacity: 0.4;
+  
+  }
+  .button-sep {
+    color: #000;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: DM Sans;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 15px; /* 100% */
+   
+  }
+  .button-container {
+    display: flex;
+    margin-top: 6%;
+    justify-content: space-between;
+}
+  .total-hours {
+    
+      margin-top: 22px;
+      margin-left: 0px;
+
+}
+  
+.day-btn {
+  border-radius: 4px;
+  border: 1px solid rgba(0, 163, 46, 0.50);
+  background: #E0FFE9;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.25) inset;
+  margin-top: 5px;
+  margin-left: 12px;
+  width: 120px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.red-btn {
+  border-radius: 4px;
+  border: 1px solid rgba(255, 0, 0, 0.5); /* Red border */
+  background: #ffe0e0;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.25) inset;
+  margin-top: 5px;
+  margin-left: 12px;
+  width: 120px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+
+
+  .btn-border-color
+  {
+    border-color: rgba(0, 0, 0, 0.10);
+    text-align: left;
+  }
+  .total-hours-and-days-container {
+    display: flex;
+    align-items: center;
+  }
+  .days {
+    color: #00A32E;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: DM Sans;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 15px;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+.days-over {
+  color: red;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 15px;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+.progress-container {
+  position: relative;
+   /* Adjust margin as needed */
+
+}
+
+
+.progress {
+  width: 100%; /* Set the width to 100% to match the container */
+  height: 8px; /* Adjust the height as needed */
+  background-color: #e0e0e0; /* Set the background color of the progress container */
+  border-radius: 10px; /* Adjust the border-radius for rounded corners */
+}
+
+.progress-bar {
+  width: 82%; /* Adjust the width to represent the progress percentage */
+  height: 100%; /* Set the height to 100% to fill the progress container */
+  border-radius: 10px; /* Keep the same border-radius as the progress container */
+  background-color: #ef0aeb; /* Set the background color of the progress bar */
+}
+
+
+
+
+.avatar-group {
+  display: flex;
+  align-items: center;
+  gap: 2px; /* Adjust the gap value as needed */
+  overflow: hidden; /* Hide the overflow to prevent fully visible images from being cut off */
+}
+
+/* .avatar-group .avatars__item {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 26px;
+  object-fit: cover;
+  position: relative;
+} */
+
+.avatar-group .avatars__item:not(:first-child) {
+  margin-left: -18px;
+}
+.avatar-group .avatars__item {
+  width: 26px;
+  height: 26px;
+
+}
+
+.avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  object-fit: cover;
+  border: 2px solid #fff0;
+}
+
+.avatar-text {
+  opacity: 0.80;
+  color: black;
+  font-size: 9px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  line-height: 10px;
+  word-wrap: break-word;
+}
+.avatar-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  object-fit: cover;
+  position: relative;
+  background-color: #007bff; /* Choose your desired background color */
+  color: white; /* Choose the text color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.prog-label-percentage {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ 
+}
+
+.prog-text {
+  color: rgba(0, 0, 0, 0.40);
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 10px;
+font-style: normal;
+font-weight: 400;
+line-height: 15px; /* 150% */
+margin-bottom: 0%;
+}
+
+.prog-percentage {
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 15px; /* 125% */
+  margin-bottom: 0%;
+}
+
+.star-icon {
+  margin-top: -21px;
+  margin-left: 170px;
+  width: 15px; /* Adjust width as needed */
+  height: 15px; /* Adjust height to maintain aspect ratio */
+  
+}
+.dot-icon{
+  margin-top: -26px;
+  margin-left: 175px;
+  width: 15px; /* Adjust width as needed */
+  height: 15px; /* Adjust height to maintain aspect ratio */
+  color: #00000042;
+}
+.timesheet {
+  width: 114px;
+  height: 36px;
+  flex-shrink: 0;
+  background-color: #DBE6FF;
+color: #4776E6;
+border-color: #4776E6;
+
+border-radius: 5px;
+border: 1px solid #4776E6;
+display: inline-block;
+
+}
+@media screen and (max-width: 1240px) {
+  .timesheet {
+    width: 95px;
+}
+}
+
+@media screen and (min-width: 1300px) {
+  .timesheet {
+    width: 182px;
+    height: 43px;
+  }
+}
+@media screen and (min-width: 1500px) {
+  .timesheet {
+    width: 150px;
+    height: 43px;
+  }
+}
+@media screen and (min-width: 1700px){
+
+  .timesheet {
+      width: 200px;
+      height: 45px;
+  }
+}
+@media screen and (min-width: 1900px){
+ .timesheet {
+    width: 183px;
+    height: 45px;
+  }
+}
+@media screen and (min-width: 2100px){
+.timesheet {
+    width: 257px;
+    height: 60px;
+}
+}
+@media screen and (min-width: 3000px){
+.timesheet {
+    width: 292px;
+    height: 60px;
+}
+}
+
+.timesheet-text{
+  color: #0040DA;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 14px;
+font-style: normal;
+font-weight: 700;
+line-height: 17px; /* 121.429% */
+}
+@media screen and (max-width: 1240px) {
+  .timesheet-text {
+   font-size: 10px;
+}
+
+}
+
+.btn-user{
+  width: 115px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 5px;
+background: #19BDA2;
+  border:none;
+}
+@media screen and (max-width: 1240px) {
+  .btn-user {
+    width: 92px;
+}
+}
+@media screen and (min-width: 1300px) {
+  .btn-user {
+    width: 186px;
+    height: 43px;
+  }
+}
+@media screen and (min-width: 1500px) {
+  .btn-user {
+    width: 151px;
+    height: 43px;
+  }
+}
+@media screen and (min-width: 1700px){
+
+  .btn-user {
+      width: 191px;
+      height: 45px;
+  }
+}
+@media screen and (min-width: 1900px){
+.btn-user {
+    width: 179px;
+    height: 45px;
+}
+}
+@media screen and (min-width: 2100px){
+.btn-user {
+    width: 269px;
+    height: 60px;
+}
+}
+@media screen and (min-width: 3000px){
+.btn-user {
+    width: 293px;
+    height: 60px;
+}
+}
+
+
+.user-btn-text{
+  color: #FFF;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 17px; /* 121.429% */
+}
+@media screen and (max-width: 1240px) {
+  .user-btn-text {
+   font-size: 12px;
+}
+
+}
+
+.icon-img{
+  margin-bottom:3px
+}
+
+
+.date-day_name{
+  text-align: right;
+  color: rgba(0, 0, 0, 0.80);
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 18px;
+font-style: normal;
+font-weight: 400;
+line-height: 17px; /* 94.444% */
+margin-right: 39px;
+margin-bottom: 5px;
+}
+@media screen and (max-width: 1198px) {
+  .date-day_name {
+    font-size: 14px;
+    margin-bottom: 0px;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .date-day_name {
+    font-size: 20px;
+  }
+}
+@media screen and (min-width: 1500px) {
+  .date-day_name {
+    font-size: 23px;
+  }
+}
+@media screen and (min-width: 1500px) {
+  .date-day_name {
+    font-size: 24px;
+  }
+}
+
+
+
+
+.current-date{
+  color: rgba(0, 0, 0, 0.80);
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 17px; /* 70.833% */
+  text-align: right;
+}
+@media screen and (max-width: 1240px) {
+  .current-date {
+    font-size: 18px;
+  }
+
+}
+@media screen and (max-width: 1100px) {
+  .current-date{
+    font-size: 18px;
+    margin-right: -13px;
+  }
+}
+@media screen and (min-width: 1300px) {
+  .current-date{
+    font-size: 26px;
+  }
+}
+@media screen and (min-width: 1700px){
+.current-date {
+    font-size: 33px;
+}
+
+}
+.hrs-text{
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 3px; /* 150% */
+  opacity: 0.4;
+}
+.hrs-subtext{
+  color: #000;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 15px;
+font-style: normal;
+font-weight: 700;
+line-height: 5px; /* 100% */
+}
+.button-div {
+white-space: nowrap; /* Prevents line break between buttons */
+margin-left: -50px;
+}
+@media screen and (max-width: 1240px) {
+  .button-div {
+    margin-left: -14px;
+}
+}
+@media screen and (max-width: 1100px){
+.button-div {
+    margin-left: -46px;
+
+}
+}
+@media screen and (max-width: 992px) {
+  .button-div  {
+    margin-left: 54%;
+  }
+  }
+
+@media screen and (max-width: 769px){
+.button-div {
+    margin-left: 493px;
+}
+}
+@media screen and (max-width: 426px){
+.button-div{
+  margin-left: 86%;
+}
+}
+@media screen and (max-width: 375px){
+.button-div {
+  margin-left: 100%;
+}
+}
+@media screen and (max-width: 320px){
+.button-div {
+    margin-left: 121%;
+}
+}
+
+@media screen and (min-width: 1300px) {
+  .button-div {
+    white-space: nowrap;
+    margin-left: -166px;
+  }
+}
+@media screen and (min-width: 1500px){
+.button-div {
+    white-space: nowrap;
+    margin-left: -68px;
+}
+}
+@media screen and (min-width: 1700px){
+.button-div {
+    white-space: nowrap;
+    margin-left: -154px;
+}
+}
+@media screen and (min-width: 1900px){
+.button-div {
+    white-space: nowrap;
+    margin-left: -86px;
+}
+}
+@media screen and (min-width: 2100px){
+.button-div {
+    white-space: nowrap;
+    margin-left: -152px;
+}
+}
+@media screen and (min-width: 3000px){
+.button-div {
+    white-space: nowrap;
+    margin-left: 0px;
+}
+}
+
+.prof-img{
+
+background-color: #3498db; /* Set the background color */
+color: white; /* Set the text color */
+border-radius: 50%; /* Make it round */
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 10px;
+font-weight: bold;
+width: 36px;
+height: 36px;
+
+
+}
+.border-btn{
+
+  width: 85px;
+  height: 34px;
+flex-shrink: 0; 
+border-radius: 4px;
+border: 0.6px solid rgba(0, 0, 0, 0.10);
+}
+
+.initials {
+text-transform: uppercase;
+
+}
+.card .custom-progress {
+height: 3px; /* Set the desired height here */
+}  
+
+.active-projects {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+}
+/* @media screen and (max-width: 1198px) {
+  .active-projects {
+    margin-left: 3%;
+  }
+}
+@media screen and (max-width: 1098px) {
+  .active-projects {
+    margin-left: 7%;
+  }
+}
+@media screen and (max-width: 991px) {
+  .active-projects {
+    margin-left: 9%;
+  }
+} */
+
+
+.active-projects span {
+  margin-right: 5px; /* Add some space between the span and the button */
+}
+.view-by{
+  color: #949494;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 125% */
+}
+@media screen and (max-width: 1198px) {
+  .view-by{
+    font-size: 12px;
+  }
+}
+
+
+.user-col{
+  margin-top: -95px;
+}
+@media screen and (max-width: 990px) {
+.user-col {
+  margin-top: -50px;
+}
+}
+@media screen and (max-width: 768px) {
+  .user-col{
+    margin-top: 0px;
+  }
+}
+
+
+.custom-card {
+border-radius: 38px;
+width: 235px;
+margin-left: -50px;
+margin-top: 10px;
+}
+/* Add this CSS code to your stylesheet */
+@media screen and (max-width: 1240px) {
+  .custom-card{
+    margin-left: -8%;
+    width:190px;
+  }
+}
+@media screen and (max-width: 1100px) {
+  .custom-card{
+    margin-left: -29%;
+    width:190px;
+  }
+}
+@media screen and (max-width: 992px) {
+  .custom-card {
+    margin-left: 9%;
+    width: 616px;
+}
+} 
+
+@media screen and (max-width: 426px) {
+  .custom-card {
+    margin-left: 2%;
+    width: 504px;
+}
+} 
+
+
+
+
+@media screen and (min-width: 1300px){
+.custom-card {
+    width: 376px;
+    margin-left: -167px;
+}
+}
+@media screen and (min-width: 1500px){
+
+  .custom-card {
+      width: 310px;
+      margin-left: -70px;
+  }
+}
+@media screen and (min-width: 1700px){
+.custom-card {
+    width: 403px;
+    margin-left: -156px;
+}
+}
+@media screen and (min-width: 1900px){
+.custom-card {
+    width: 370px;
+    margin-left: -87px;
+}
+}
+@media screen and (min-width: 2100px){
+  .custom-card {
+      width: 540px;
+      margin-left: -155px;
+  }
+}
+@media screen and (min-width: 3000px){
+  .custom-card {
+      width: 597px;
+      margin-left: -4px;
+  }
+}
+  
+
+
+
+
+.custom-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10px; /* To compensate for negative margins applied by Bootstrap */
+}
+
+.custom-column {
+  flex: 1 0 calc(25% - 20px); /* 4 columns in a row with 20px margin between */
+  margin: 10px; /* Adjust margin as needed */
+  z-index: 2;
+}
+
+/* Apply the custom styles to the columns */
+.col-lg-4.col-md-6.col-sm-12.mb-5.mt-3 {
+  flex: 0 0 auto; /* Reset flex properties */
+  width: auto; /* Reset default width */
+  margin: 0; /* Reset default margin */
+}
+
+
+.user-name{
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 17px; /* 106.25% */
+
+}
+.user-deg{
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 5px; /* 141.667% */
+  opacity: 0.5;
+
+}
+
+.custom-button {
+  background: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);
+  border-radius: 5px;
+  color: #FFFFFF;
+  }
+
+  .member-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Start from the left */
+}
+.update-member-list{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Start from the left */
+}
+
+.member {
+  margin: 20px 5px 0px 0px;
+}
+.update-member {
+  margin: 0px 5px 0px 0px;
+}
+
+/* Increase margin for the first .member element */
+.member:first-child {
+    margin-top: 20px; /* Adjust this value for more or less space */
+}
+
+
+.member-info {
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    background-color: #F1F1F1;
+    margin: 10px; /* Adjust this value to customize the spacing between .member-info divs */
+}
+
+.member-name {
+    margin-right: 10px;
+}
+
+.member-initials {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #4776e6;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+}
+
+.member img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+  .create-button{
+    width: 182px;
+height: 40px;
+border-radius: 5px;
+background-color: #4776E6, #8E54E9;
+
+  }
+
+.welcome-text{
+  color: #4941CD;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 100% */
+}
+.active-text{
+  color: rgba(0, 0, 0, 0.80);
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px; /* 66.667% */
+}
+
+@media screen and (max-width: 1198px) {
+  .active-text{
+    font-size: 22px;
+  }
+}
+
+.day-text{
+  font-family: DM Sans;
+font-size: 18px;
+font-weight: 400;
+line-height: 17px;
+letter-spacing: 0px;
+text-align: left;
+color: #000000CC;
+}
+
+.user-heading{
+  color: #000;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 20px;
+font-style: normal;
+font-weight: 700;
+line-height: 17px; /* 85% */
+}
+
+@media screen and (max-width: 1198px) {
+  .active-text{
+    font-size: 22px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .date-div{
+    margin-right: 26%;
+  }
+}
+@media screen and (max-width: 769px){
+.date-div {
+    margin-right: 6%;
+}
+}
+@media screen and (max-width: 426px){
+.date-div {
+    margin-right: -34%;
+}
+}
+@media screen and (max-width: 375px){
+.date-div {
+    margin-right: -56%;
+}
+}
+@media screen and (max-width: 320px){
+.date-div {
+    margin-right: -90%;
+}
+}

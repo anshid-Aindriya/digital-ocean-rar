@@ -1,0 +1,482 @@
+  {% extends 'layouts/topbar.html' %}
+  {% load static %}
+  {% block content %}
+
+
+
+  <link href="{% static 'assets/css/timesheet.css' %}" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+      <div class="pagetitle mt-1">
+        <div>
+          {% if messages %}
+              {% for message in messages %}
+                  {% if message.tags == 'error' %}
+                      <div class="alert {% if message.tags %}alert-danger{% endif %}" role="alert">{{ message }}</div>
+                  {% else %}
+                      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+                  {% endif %}
+              {% endfor %}
+          {% endif %}
+      </div>
+              <li class="nav items active"><a href="{% url 'dashboard' %}" style="text-decoration:none"> < Back to home</a></li>
+      
+              <div class="row">
+                <div class="col-8">
+                  <h1 class="mt-3">Time Sheet</h1>
+                </div>
+                <div class="col-4">
+                  <button class="req-btn" onclick="addTimesheetRow()">
+                    Add Timesheet
+                  </button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="mt-3" id="filterResultContainer">
+                        <button class="filter-btn" data-bs-toggle="modal" data-bs-target="#Filter">
+                            <span class="filter-btn-text">Filter</span>
+                        </button>
+                        <span class="filter mx-2">Filter Applied</span>
+                        <span class="badge text-dark filter-text mx-2" id="projectFilter">{{ filter_details.selected_project_title }}</span>
+                        <span class="badge text-dark filter-text mx-2" id="startDateFilter">{{ filter_details.selected_start_date }}</span>
+                        <span class="badge text-dark filter-text mx-2" id="endDateFilter">{{ filter_details.selected_end_date }}</span>
+                        <button class="badge filter-clear mx-2" id="clearFilter">Clear Filter</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="total-time" id="totalTimeWorked">
+                        <div class="time-text d-flex justify-content-center">Total Time Worked</div>
+                        <div id="totalWorkedTime" class="time-subtext">{{ total_worked_time }}</div>
+                    </div>
+                </div>
+            </div>
+        
+
+      </div><!-- End Page Title -->
+    
+      <section class="section dashboard">
+        <div class="table-responsive">
+        <div class="col-sm-12 mt-3">
+          <table class="custome-table">
+            <thead>
+              <tr>
+                <th scope="col" class="proj-style">Project</th>
+                <th scope="col" class="user-style">User</th>
+                <th scope="col" class="time-style">Worked Time</th>
+                <th scope="col" class="date-style">Date</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+          <div class="card mt-2">
+            <div class="card-body">
+              <table class="table">
+               
+                <tbody class="overmt-5" id="timesheetBody">
+                  {% for timesheet_entry in timesheet_data %}
+                  <tr data-timesheet-row="{{ timesheet_entry.id }}" data-project="{{ timesheet_entry.project.title }}" data-start-date="{{ timesheet_entry.date|date:'Y-m-d' }}"data-user="{{ timesheet_entry.user.name }}"data-worked-time="{{ timesheet_entry.worked_time }}">
+                    <!-- Table data columns go here -->
+                    <td>
+                      <div class="prof-img rounded-circle">
+                        <span class="initials">{{ timesheet_entry.project.title|slice:":2" }}</span>
+                      </div>
+                      {{ timesheet_entry.project.title }}
+                    </td>
+                    <td>
+                      {% if timesheet_entry.user.profile_image %}
+                      <img src="{{ timesheet_entry.user.profile_image.url }}" alt="{{ timesheet_entry.user.name }}" class="prof-img rounded-circle">
+                      {% else %}
+                      <div class="prof-img rounded-circle">
+                        <span class="initials">{{ timesheet_entry.user.name|slice:":2" }}</span>
+                      </div>
+                      {% endif %}
+                      {{ timesheet_entry.user.name }}
+                    </td>
+                    <td>{{ timesheet_entry.worked_time }}</td>
+                    <td>{{ timesheet_entry.date }}</td>
+                    <td>
+                      <div class=" dropdown">
+                        <a href="#" class="" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
+                          <i class="bi bi-three-dots-vertical"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                          <!-- Pass the timesheet entry ID as a data attribute -->
+                          <li>
+                            <a class="dropdown-item edit-timesheet-button" href="#" data-timesheet-id="{{ timesheet_entry.id }}">Edit</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item delete-button" href="#" data-bs-toggle="modal" data-bs-target="#verticalycentered" data-timesheet-id="{{ timesheet_entry.id }}">Delete</a>
+                        </li>
+                                            
+                          
+                          <!-- Add more items as needed -->
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+  <!-- modal -->
+
+  <div class="modal fade" id="Filter" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="border:none;">
+          
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="card-body">
+            <h2 class="card-title custom-card-header d-flex justify-content-center mb-2">Filter Result</h2>
+  
+          
+        
+          <form method="get" action="{% url 'timesheet' %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <div class="row">
+                  <div class="col custcol-1">
+                      <label for="projectSelect">Select Project</label>
+                      <select class="form-control custom-input" id="projectSelect" name="project">
+                        <option value="">All</option>
+                        {% for project in project_data %}
+                        <option value="{{project.id}}">{{project.title}}</option>
+                      {% endfor %}
+                      </select>
+                  </div>
+    
+          <div class="col custcol-2 ">
+              <label for="startDate">Start Date</label>
+              <input type="date" class="form-control custom-input" id="startDate" name="start_date">
+          </div>
+  </div>
+    
+
+  <div class="row mt-3">
+    
+  <div class="col custcol-3">
+    
+        <label for="endDate">Selected End Date</label>
+        <input type="date" class="form-control custom-input" id="endDate" name="end_date">
+    
+  </div>
+
+
+
+        </div>
+          
+              </div>
+              
+              
+                <div class="d-flex justify-content-center mt-5">
+                  <button type="submit" class="btn custom-button" style="background-color: #4776E6;">Apply</button>
+                </div>
+          </form>        
+          
+          </div>
+        </div>
+    
+      </div>
+      
+    </div>
+  </div>
+
+  
+
+  <div class="modal fade" id="verticalycentered" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-center d-flex justify-content-center">
+                <h5 class="modal-title">Delete Timesheet</h5>
+            </div>
+            <div class="modal-body text-center"> <!-- Center text -->
+                <p>Are you sure you want to delete?</p>
+                <form id="deleteForm" method="post" action="{% url 'timesheet-delete' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" id="timesheetIdInput" value="">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn" style="color: #fff; background: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div><!-- End Vertically centered Modal-->
+
+  
+
+  
+ <!-- Add these links to your HTML -->
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- jQuery UI CSS -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<!-- jQuery UI JS -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  document.querySelectorAll(".delete-button").forEach(function (button) {
+      button.addEventListener("click", function () {
+          var timesheetId = this.getAttribute('data-timesheet-id');
+          document.getElementById("timesheetIdInput").value = timesheetId;
+      });
+  });
+</script>
+
+<script>
+  // Function to populate the user dropdown based on the selected project
+  function populateUserDropdown(selectedProjectId, userDropdown) {
+    userDropdown.innerHTML = '<option>Loading...</option>';
+
+    // Make an AJAX request to fetch users for the selected project
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/get_users_for_project/" + selectedProjectId, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Parse the JSON response
+            var responseData = JSON.parse(xhr.responseText);
+
+            // Clear the user dropdown
+            userDropdown.innerHTML = '';
+
+            // Populate the user dropdown with the fetched data
+            responseData.users.forEach(function(user) {
+                var option = document.createElement("option");
+                option.value = user.id;
+                option.textContent = user.name;
+                userDropdown.appendChild(option);
+            });
+        }
+    };
+    xhr.send();
+}
+
+  function editTimesheetRow(button) {
+      // Check if the button has the "edit" class
+      if (!button.classList.contains("edit-timesheet-button")) {
+          return; // Exit if it's not an "Edit" button
+      }
+
+      // Find the closest row element
+      var row = button.closest("tr");
+
+      // Get timesheet data from data attributes of the row
+      var timesheetId = row.getAttribute("data-timesheet-row");
+      var project = row.getAttribute("data-project");
+      var user = row.getAttribute("data-user");
+      var workedTime = row.getAttribute("data-worked-time");
+      var startDate = row.getAttribute("data-start-date");
+
+      // Create an editable form and populate it with the retrieved data
+      var editForm = document.createElement("tr");
+      editForm.innerHTML = `
+          <td>
+              <input type="text" class="form-control" placeholder="" name="project" required value="${project}" readonly>
+          </td>
+          <td>
+              <input type="text" class="form-control" placeholder="" name="user" required value="${user}" readonly>
+          </td>
+          <td>
+              <input type="text" class="form-control" placeholder="" name="worked_time" required value="${workedTime}">
+          </td>
+          <td>
+              <input type="date" class="form-control" name="start_date" required value="${startDate}">
+          </td>
+          <td>
+              <i class="bi bi-check2" style="cursor: pointer; margin-left: 10px; color:blue" onclick="saveEditedTimesheet(this, ${timesheetId})"></i>
+              <i class="bi bi-x" style="cursor: pointer; color:red" onclick="cancelEdit(this)"></i>
+          </td>
+      `;
+
+      // Find the original row by data-timesheet-row attribute
+      var originalRow = document.querySelector(`[data-timesheet-row="${timesheetId}"]`);
+
+      // Check if the originalRow is found
+      if (originalRow) {
+          // Hide the original row
+          originalRow.style.display = 'none';
+
+          // Insert the edit form before the original row
+          originalRow.parentElement.insertBefore(editForm, originalRow);
+      } else {
+          console.log("Original row not found.");
+      }
+  }
+
+  // Function to cancel the edit and revert to the original row
+  function cancelEdit(button) {
+      var row = button.parentElement.parentElement;
+
+      // Find the corresponding original row and show it
+      var originalRow = row.previousElementSibling;
+      if (originalRow) {
+          originalRow.style.display = '';
+      }
+
+      // Remove the edit form
+      row.remove();
+  }
+
+  // Function to save the edited data
+  function saveEditedTimesheet(button, timesheetId) {
+      var row = button.parentElement.parentElement;
+
+      // Find the input elements by name
+      var projectInput = row.querySelector("input[name='project']");
+      var userInput = row.querySelector("input[name='user']");
+      var workedTimeInput = row.querySelector("input[name='worked_time']");
+      var startDateInput = row.querySelector("input[name='start_date']");
+
+      var project = projectInput.value;
+      var user = userInput.value;
+      var workedTime = workedTimeInput.value;
+      var startDate = startDateInput.value;
+
+      // Send data to the server using AJAX for editing
+      $.ajax({
+          type: "POST",
+          url: "/edit-timesheet/" + timesheetId + "/",
+          data: {
+              'user_id': user,
+              'project_id': project,
+              'worked_time': workedTime,
+              'start_date': startDate,
+              'timesheet_id': timesheetId,
+              'csrfmiddlewaretoken': '{{ csrf_token }}'
+          },
+          success: function (response) {
+              console.log(response);
+              location.reload();
+          },
+          error: function (error) {
+              console.log(error);
+          }
+      });
+  }
+
+  // Function to add a new timesheet row
+  function addTimesheetRow() {
+    var tableBody = document.getElementById("timesheetBody");
+
+    var newRow = document.createElement("tr");
+    newRow.innerHTML = `
+    <td>
+      <select class="form-select project-dropdown">
+          <option value="">Select a project</option>
+          {% for project in project_data %}
+          <option value="{{ project.id }}">{{ project.title }}</option>
+          {% endfor %}
+      </select>
+  </td>
+  <td>
+      <select class="form-select user-dropdown">
+          <!-- This dropdown will be populated dynamically using JavaScript -->
+      </select>
+  </td>
+  <td>
+      <input type="text" class="form-control" placeholder="Type Format: 5h:30m" name="worked_time" required>
+  </td>
+  <td>
+      <input type="date" class="form-control" name="start_date" required>
+  </td>
+  <td>
+      <i class="bi bi-check2" style="cursor: pointer; margin-left: 10px; color:blue" onclick="addTimesheet(this)"></i>
+      <i class="bi bi-x" style="cursor: pointer; color:red" onclick="cancelRow(this)"></i>
+  </td>
+`;
+
+
+    // Insert the new row at the beginning of the table body
+    tableBody.insertBefore(newRow, tableBody.firstChild);
+
+    // Add an event listener to the project dropdown in the new row
+    var projectDropdown = newRow.querySelector("select.project-dropdown");
+    var userDropdown = newRow.querySelector("select.user-dropdown");
+    if (projectDropdown && userDropdown) {
+        projectDropdown.addEventListener("change", function () {
+            var selectedProjectId = this.value;
+            populateUserDropdown(selectedProjectId, userDropdown);
+        });
+    }
+}
+
+  // Function to cancel adding a new timesheet row
+  function cancelRow(icon) {
+      var row = icon.parentElement.parentElement;
+      row.remove();
+  }
+
+  // Function to save the added timesheet
+  function addTimesheet(icon) {
+      var row = icon.parentElement.parentElement;
+      var selects = row.querySelectorAll("select");
+      var project = selects[0].value;
+      var user = selects[1].value;
+      var workedTimeInput = row.querySelector("input[name='worked_time']");
+      var startDateInput = row.querySelector("input[name='start_date']");
+
+      var workedTime = workedTimeInput.value;
+      var startDate = startDateInput.value;
+
+      if (!project || !user || !workedTime || !startDate) {
+          alert("Please fill in all fields before saving.");
+          return;
+      }
+
+      // Send data to the server using AJAX
+      $.ajax({
+          type: "POST",
+          url: "/add-timesheet/", // Adjust the URL to match your Django URL configuration
+          data: {
+              'user_id': user,
+              'project_id': project,
+              'worked_time': workedTime,
+              'start_date': startDate,
+              'csrfmiddlewaretoken': '{{ csrf_token }}' // Include CSRF token for security
+          },
+          success: function (response) {
+              console.log(response);
+              location.reload(); // Reload the page after successfully saving data
+          },
+          error: function (error) {
+              console.log(error);
+          }
+      });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+      // Add event listeners for edit and add buttons
+      document.querySelectorAll(".edit-timesheet-button").forEach(function (button) {
+          button.addEventListener("click", function () {
+              console.log("Edit button clicked");
+              editTimesheetRow(this);
+          });
+      });
+
+      var addTimesheetButton = document.getElementById("addTimesheetButton");
+      if (addTimesheetButton) {
+          addTimesheetButton.addEventListener("click", function () {
+              console.log("Add Timesheet button clicked");
+              addTimesheetRow();
+          });
+      }
+  });
+
+  // Add event listeners for the "Delete" buttons within the modals
+
+  // Rest of your JavaScript functions...
+</script>
+
+
+<script src="{% static 'assets/js/timesheet.js' %}"></script>  
+
+  {% endblock %}
+    

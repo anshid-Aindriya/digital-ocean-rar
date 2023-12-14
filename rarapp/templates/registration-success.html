@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Favicons -->
+  <link href="{% static 'assets/img/aindriya.png' %}" rel="icon">
+  <link href="{% static 'assets/img/aindriya.png' %}" rel="aindriya-icon">
+    <title>Registration Success</title>
+    <link rel="stylesheet" href="{% static 'assets/css/success.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+ <!--Load Spinner -->
+ <div class="custom-spinner">
+    <div class="loader"></div>
+  </div>
+  
+    <div class="container">
+        <div class="form-container">
+            <div class="login-form">
+                <div class="logo">
+                    <span style="display: inline-block;">
+                        <img src="{% static 'assets/img/aindriya.png' %}" alt="" srcset="">
+                    </span>
+                    <span style="display: inline-block; text-align: left;"><b>A</b>indriya<br><b>M</b>anagement<br><b>S</b>oftware</span>
+                </div>
+    
+                <h2 class="success-text">Registration Successful</h2>
+             <p class="success-subtext" style="margin-bottom: 10%;">You’ve successfully registered to AMS.
+                Now you can login to your account using your email and password
+            </p>
+            <a  href="{% url 'login' %}" class="log-style gradient-color" style="text-decoration:none;">Login</a>
+            </div>
+        </div>
+        <div class="image-container">
+            <img src="{% static 'assets/img/Frame.png' %}" alt="" srcset="" style="width: 200%; height: auto; max-width: 500px;">
+        </div>
+    </div>
+    
+    <script>
+        window.addEventListener("load", function () {
+          document.querySelector('.custom-spinner').style.display = 'none';
+        });
+      </script>
+      
+</body>
+</html>

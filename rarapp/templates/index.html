@@ -1,0 +1,816 @@
+{% extends "layouts/topbar.html" %}
+{% load static %}
+{% block content %}
+<link href="{% static 'assets/css/index.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<div>
+  {% if messages %}
+      {% for message in messages %}
+          {% if message.tags == 'error' %}
+              <div class="alert {% if message.tags %}alert-danger{% endif %}" role="alert">{{ message }}</div>
+          {% else %}
+              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+          {% endif %}
+      {% endfor %}
+  {% endif %}
+</div>
+
+<div class="pagetitle" >
+ 
+  <div class="active-projects">
+    <span class="active-text">Active Projects</span>
+    <span class="view-by mx-3">view by </span>
+    <button class="favorite-btn" id="favoriteDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <span class="favorite-text">
+          {% if request.GET.show_favorites == 'true' %}
+              Favorites
+          {% else %}
+              All Projects
+          {% endif %}
+      </span>
+      <img class="icon-img"  src="{% static 'assets/img/caret-down.svg' %}" alt="icon">
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="favoriteDropdown">
+      <li>
+          <a class="dropdown-item filter-option" href="?show_favorites=false" data-filter="all">All Projects</a>
+      </li>
+      <li>
+          <a class="dropdown-item filter-option {% if request.GET.show_favorites == 'true' %}active{% endif %}" href="?show_favorites=true" data-filter="favorites">Favorites</a>
+      </li>
+      <!-- Add more items as needed -->
+  </ul>
+  
+  
+   <button class="req-btn" data-bs-toggle="modal" data-bs-target="#createProject" data-action="create">
+      <span class="req-text"> + Create New Project</span>
+  </button> 
+  
+  
+
+  </div>
+
+
+
+</div><!-- End Page Title -->
+
+
+
+<section class="section dashboard">
+  <div class="row ">
+ <div class="col-lg-10">
+    {% if project_data %}
+    <div class="row ">
+        {% for project in project_data %}
+      
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-5 mt-3 custom-column">
+          <a href="{% url 'main' project_id=project.id %}" style="text-decoration: none;"> 
+          <div class="card-container">
+            <div class="profile-image round-color" style="background-color: {{ project.random_color }};">
+                    <span class="initials">{{ project.title|slice:":2" }}</span>
+                </div>
+                <form action="" method="post">
+                    <div class="card" style="border-radius: 32px;">
+                        <div class="card-body">
+                            <div class="create-div">
+                              <div>
+                                Created on {{ project.formatted_created_at }}
+                              <br>
+                            {{ project.formatted_created_time }} 
+                            </div>
+                            
+                            </div>
+                            <div class="dot-icon dropdown ">
+                              <a href="#" class="" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
+                                <img class="#" src="{% static 'assets/img/dot-three.svg' %}" alt="icon">
+                              </a>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                  <!-- Dropdown menu items here -->
+                                  <li>
+                                    <a class="dropdown-item edit-project" href="#" data-toggle="modal" data-target="#updateProject" data-project-id="{{ project.id }}">Edit</a>
+                                </li>
+                                
+
+                                <li><a class="dropdown-item delete-project" href="#" data-bs-toggle="modal" data-bs-target="#projectDel" data-project-id="{{ project.id }}">Delete </a></li>
+
+                                  <!-- Add more items as needed -->
+                              </ul>
+                          </div>
+                                             
+                            <a href="{% url 'main' project_id=project.id %}" style="text-decoration: none;">
+                                <div class="BidWinner">{{ project.title }}</div>
+                            </a>
+                            <hr>
+                            <div class="button-container">
+                                <div class="border-btn">
+                                    <div class="button-start">Start Date</div>
+                                    <div class="button-sep">{{ project.formatted_start_date }}</div>
+                                </div>
+                                <div class="border-btn">
+                                    <div class="button-due">Due Date</div>
+                                    <div class="button-date text-end">{{ project.formatted_due_date }}</div>
+                                </div>
+                            </div>
+                            <div class="total-hours-and-days-container">
+                                <div class="total-hours">
+                                    <p class="hrs-text">Total Hours </p>
+                                    <p class="hrs-subtext">{{ project.total_hrs }}</p>
+                                </div>
+                                <div class="{% if project.overdue %}red-btn{% else %}day-btn{% endif %}">
+                                  <div class="button-content">
+                                      <p class="days {% if project.overdue %}days-over{% endif %}">
+                                          {{ project.additional_message }}
+                                      </p>
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="progress-container">
+                                {% if project.progress %}
+                                <div class="prog-label-percentage">
+                                    <p class="prog-text">Progress</p>
+                                    <p class="prog-percentage">{{ project.progress }}%</p>
+                                </div>
+                                <div class="progress custom-progress">
+                                    <div class="progress-bar" style="width: {{ project.progress }}%;background-color: {{ project.random_color }};"></div>
+                                </div>
+                                {% else %}
+                                <div class="prog-label-percentage">
+                                    <p class="prog-text">Progress</p>
+                                    <p class="prog-percentage">N/A</p>
+                                </div>
+                                <div class="progress custom-progress">
+                                    <div class="progress-bar" style="width: 0;"></div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="avatar-group avatars mt-2">
+                              {% for user in project.users.all|slice:":4" %}
+                                  {% if user.profile_image %}
+                                      <a href="#" class="avatars__item">
+                                          <img class="avatar" src="{{ user.profile_image.url }}" alt="">
+                                      </a>
+                                  {% else %}
+                                      <!-- Display default image if the user does not have a profile image -->
+                                      <a href="#" class="avatars__item">
+                                          <img class="avatar" src="{% static 'assets/img/836.jpg' %}" alt="Default Image">
+                                      </a>
+                                  {% endif %}
+                              {% endfor %}
+                              
+                              <!-- Display the name of one remaining user and user count -->
+                              {% if project.user_count > 4 %}
+                              <div class="avatar-text">
+                                  {% for user in project.users.all|slice:"4:5" %}
+                                      {{ user.name }}
+                                  {% endfor %}
+                                  {% if project.user_count > 5 %}
+                                 
+                                      and <br> {{ project.user_count|add:"-5" }} others
+                                  
+                                  {% endif %}
+                                </div>
+                              {% endif %}
+                          </div>
+                          
+                          
+                          
+                          <!-- Inside your project card -->
+                          <div class="star-icon">
+                          <a href="#">  <img id="star-{{ project.id }}" src="{% if project.is_favorite %}{% static 'assets/img/star-fill.svg' %}{% else %}{% static 'assets/img/star.svg' %}{% endif %}" alt="icon" onclick="toggleStar('{{ project.id }}')"></a>
+                          </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    No Data Found
+    {% endif %}
+   
+</div>
+
+
+ <!-- Right side columns -->
+ <div class="col-lg-2 user-col">
+  
+    <div class="date-div">
+      <div class="mt-2 date-day_name text-align-right">{{ day_name }}</div>
+     <div class= "current-date"> {{ current_date|date:"M d, Y" }} <img class="#" style="margin-bottom: 5px;" src="{% static 'assets/img/calendar.svg' %}" alt="icon">
+     </div>
+    </div>
+    <div class="button-div">
+      <button type="button" class="timesheet mt-3" id="timesheetButton">
+        <img class="#"  src="{% static 'assets/img/timer.svg' %}" alt="icon"> <span class="timesheet-text">Time Sheet</span>
+    </button>
+        <button type="button" class="btn-user" data-bs-toggle="modal" data-bs-target="#addUser">
+            <span class="user-btn-text">+ Add User</span>
+        </button>
+    </div>
+
+    <div class="custom-card ">
+      {% if user_data %}
+        <div class="card" style="border-radius: 10px;">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0 user-heading">Users</h5>
+            </div>
+            {% for user in user_data %}
+            <div class="Group37 mb-3 d-flex align-items-center">
+                <div class="col-2">
+                    {% if user.profile_image %}
+                    <img src="{{ user.profile_image.url }}" alt="{{ user.name }}" class="rounded-circle" style="width: 30px; height: 30px;">
+                    {% else %}
+                    <img src="{% static 'assets/img/836.jpg' %}" alt="{{ user.name }}" class="rounded-circle" style="width: 30px; height: 30px;">
+                    {% endif %}
+                </div>
+                <div class="col-7">
+                    <div class="user-details mx-2">
+                      <span class="user-name" style="display: inline-block; max-width: 150px; overflow: hidden; text-overflow: ellipsis;" title="{{ user.name }}">
+                        {{ user.name }}
+                    </span>
+                        <div class="user-deg">{{ user.position }}</div>
+                    </div>
+                </div>
+                <div class="col-3 text-end">
+                    <div class="dot-icon-user dropdown mt-2">
+                      <a href="#" class="" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
+                        <img class="#" src="{% static 'assets/img/dot-three.svg' %}" alt="icon">
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <!-- Add a "data-user-id" attribute to your "Edit" button -->
+                        <li><a class="dropdown-item edit-user" href="#" data-user-id="{{ user.id }}">Edit</a></li>
+
+                          <!-- Dropdown menu items here -->
+                          <li><a class="dropdown-item delete-user" href="#" data-bs-toggle="modal" data-bs-target="#userDel" data-user-id="{{ user.id }}">Delete</a></li>
+
+                          <!-- Add more items as needed -->
+                      </ul>
+                  </div>
+                </div>
+            </div>
+            <hr>
+            {% endfor %}
+            
+          </div>
+        </div>
+        {% else %}
+        No Data Found
+    {% endif %}
+      </div>
+<!-- End Right side columns -->
+
+  </div>
+</section>
+
+<!--Create User Modal-->
+
+<div class="modal fade" id="addUser" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="border:none;">
+        
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body">
+          <h2 class="card-title custom-card-header d-flex justify-content-center">Add New Member</h2>
+          <form method="post" action="{% url 'add-user' %}"  enctype="multipart/form-data" >
+            {% csrf_token %}
+              <div class="mb-3">
+                  <label for="name" class="form-label custom-label">Name</label>
+                  <input type="text" class="form-control custom-input" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label custom-label">Email</label>
+                  <input type="email" class="form-control custom-input" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                  <label for="position" class="form-label custom-label">Position</label>
+                  <select class="form-select custom-input" id="position" name="position" required>
+            
+                    <option value="Developer">Developer</option>
+                    <option value="Tester">Tester</option>
+                    <option value="Designer">Designer</option>
+                    <!-- Add more options as needed -->
+                  </select>
+                </div>
+                <div class="mb-3 text-center">
+                  <label class="form-label custom-label">Profile Picture</label>
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="rounded-circle bg-light p-3 d-flex align-items-center justify-content-center "
+                    style="width: 60px; height: 60px; cursor: pointer;" onclick="openFileInput('create')">
+                    <input type="file" id="profile-image-create" style="display: none;" name="profile_image">
+                    <i class="bi bi-plus-lg" ></i>
+               </div>
+               
+                  </div>
+              </div>
+              </div>
+              
+              
+              
+                <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn custom-button">Create</button>
+                </div>
+          </form>
+        </div>
+      </div>
+   
+    </div>
+  </div>
+</div>
+
+<!--update User Modal-->
+<div class="modal fade" id="updateUser" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="border:none;">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body">
+          <h2 class="card-title custom-card-header d-flex justify-content-center">Update Member</h2>
+          <form method="post" action="{% url 'update-user' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" id="updateUserId" name="user_id" value="{{ user.id }}">
+            <div class="mb-3">
+              <label for="update-name" class="form-label custom-label">Name</label>
+              <input type="text" class="form-control custom-input" id="update-name" name="name" required>
+            </div>
+            <div class="mb-3">
+              <label for="update-email" class="form-label custom-label">Email</label>
+              <input type="email" class="form-control custom-input" id="update-email" name="email" required>
+            </div>
+            <div class="mb-3">
+              <label for="update-position" class="form-label custom-label">Position</label>
+              <select class="form-select custom-input" id="update-position" name="position" required>
+                <option value="Developer">Developer</option>
+                <option value="Tester">Tester</option>
+                <option value="Designer">Designer</option>
+              </select>
+            </div>
+            <div class="mb-3 text-center">
+              <label class="form-label custom-label">Profile Picture</label>
+              <div class="d-flex flex-column align-items-center">
+                <div class="rounded-circle bg-light p-3 d-flex align-items-center justify-content-center "
+                style="width: 60px; height: 60px; cursor: pointer;" onclick="openFileInput('update')">
+                <input type="file" id="profile-image-update" style="display: none;" name="profile_image">
+                <i class="bi bi-plus-lg" ></i>
+           </div>
+           
+              </div>
+          </div>
+          </div>
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn custom-button">Update</button>
+            </div>
+          </form>
+        </div>
+      </div>
+   
+    </div>
+  </div>
+</div>
+
+<!--Delete User Modal-->
+<div class="modal fade" id="userDel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header text-center d-flex justify-content-center">
+              <h5 class="modal-title">Delete User</h5>
+          </div>
+          <div class="modal-body text-center"> <!-- Center text -->
+              <p>Are you sure you want to delete?</p>
+              <form id="deleteForm" method="post" action="{% url 'user-delete' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="id" id="userdelIdInput" value="">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn" style="color: #fff; background:  #19BDA2;">Delete</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- Create Project Modal-->
+<div class="modal fade" id="createProject" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="border:none;">
+        
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'add-project' %}">
+          {% csrf_token %}
+            <h2 class="text-center mb-4">Create New Project</h2>
+            <div class="form-group">
+              <label for="projectName">Project Name</label>
+              <input type="text" class="form-control" id="projectName" name="title" required>
+            </div>
+            <div class="form-group">
+              <label for="totalHours">Total Hours Required</label>
+              <input type="text" class="form-control" id="totalHours" name="total_hours" required>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="startDate" name="start_date" required>
+              </div>
+              <div class="col-md-6">
+                <label for="dueDate" class="form-label">Due Date</label>
+                <input type="date" class="form-control" id="dueDate" name="due_date" required>
+              </div>
+            </div>
+            
+              <div class="form-group">
+                <label for="selectMembers">Select Members</label>
+                <input type="text" class="form-control" id="selectMembers" autocomplete="off">
+                <div id="autocomplete-suggestions"></div>
+              </div>
+              
+            <div class="member-list">
+        
+              <!-- Repeat for other members -->
+            </div>
+       
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn custom-button">Create</button>
+            </div>
+            
+          </form>
+      
+      </div>
+   
+    </div>
+  </div>
+</div>
+
+<!-- Update Project Modal -->
+<div class="modal fade" id="updateProject" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="border:none;">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'update-project' %}">
+          {% csrf_token %}
+          <!-- Add a hidden input field to store the project ID -->
+          <input type="hidden" id="updateProjectId" name="project_id" value="">
+          <h2 class="text-center mb-4">Update Project</h2>
+          <div class="form-group">
+            <label for="updateProjectName">Project Name</label>
+            <input type="text" class="form-control" id="updateProjectName" name="title" required>
+          </div>
+          <div class="form-group">
+            <label for="updateTotalHours">Total Hours Required</label>
+            <input type="text" class="form-control" id="updateTotalHours" name="total_hours" required>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="updateStartDate" class="form-label">Start Date</label>
+              <input type="date" class="form-control" id="updateStartDate" name="start_date" required>
+            </div>
+            <div class="col-md-6">
+              <label for="updateDueDate" class="form-label">Due Date</label>
+              <input type="date" class="form-control" id="updateDueDate" name="due_date" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="updateSelectMembers">Select Members</label>
+            <input type="text" class="form-control" id="updateSelectMembers">
+            <div id="updateAutocompleteSuggestions"></div>
+          </div>
+          <div class="update-member-list">
+            <!-- Repeat for other members -->
+          </div>
+          <div class="d-flex justify-content-center">
+            <button type="submit" class="btn custom-button">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Project Modal -->
+<div class="modal fade" id="projectDel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header text-center d-flex justify-content-center">
+        <h5 class="modal-title">Delete Project</h5>
+      </div>
+      <div class="modal-body text-center"> <!-- Center text -->
+        <p>Are you sure you want to delete this project?</p>
+        <form id="deleteProjectForm" method="post" action="{% url 'project-delete' %}">
+          {% csrf_token %}
+          <input type="hidden" name="p_id" id="projectDelIdInput" value="">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn" style="color:#fff; background: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- jQuery UI CSS -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<!-- jQuery UI JS -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+
+
+  
+
+<script>
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+  
+  function toggleStar(projectId) {
+    const starIcon = $(`#star-${projectId}`);
+    const isFavorite = !starIcon.hasClass('star-filled');
+    const csrftoken = getCookie('csrftoken');
+  
+    // Send an AJAX request to update the "is_favorite" field in the database
+    $.ajax({
+      url: '/toggle_favorite/',
+      method: 'POST',
+      headers: { 'X-CSRFToken': csrftoken }, // Include the CSRF token in the request headers
+      data: {
+        project_id: projectId,
+        is_favorite: isFavorite ? 'true' : 'false',
+      },
+      success: function (data) {
+        if (isFavorite) {
+          // Show the filled star icon
+          starIcon.attr('src', '{% static 'assets/img/star-fill.svg' %}');
+          starIcon.addClass('star-filled');
+        } else {
+          // Show the empty star icon
+          starIcon.attr('src', '{% static 'assets/img/star.svg' %}');
+          starIcon.removeClass('star-filled');
+        }
+      },
+      error: function (error) {
+        console.error('Error toggling favorite:', error);
+      },
+    });
+  }
+  
+  // Function to filter projects by favorites or all projects
+  function filterProjects(showFavorites) {
+    $('.project-card').each(function () {
+      const isFavorite = $(this).data('is-favorite');
+  
+      if (showFavorites && !isFavorite) {
+        $(this).hide();
+      } else {
+        $(this).show();
+      }
+    });
+  }
+  
+  $(document).ready(function() {
+    $('.delete-user').on('click', function() {
+      var userId = $(this).data('user-id');
+      $('#userdelIdInput').val(userId);
+    });
+    $('.delete-project').on('click', function() {
+      var projectId = $(this).data('project-id');
+      console.log("Project ID:", projectId); // Debug statement
+      $('#projectDelIdInput').val(projectId);
+    });
+  });
+
+  // Function to populate and display the "Update Member" modal
+  function populateUpdateUserModal(userId) {
+    // Fetch user data based on the userId
+    fetch(`/get-user-data/?user_id=${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+
+        // Populate the fields in the "Update Member" modal
+        const updateNameInput = document.getElementById("update-name");
+        const updateEmailInput = document.getElementById("update-email");
+        const updatePositionSelect = document.getElementById("update-position");
+
+        // Populate the form fields with user data
+        updateNameInput.value = data.name;
+        updateEmailInput.value = data.email;
+        updatePositionSelect.value = data.position;
+
+        // Open the "Update Member" modal
+        const updateUserModal = new bootstrap.Modal(document.getElementById('updateUser'));
+        updateUserModal.show();
+      });
+  }
+
+  // Add a click event listener to the "Edit" buttons
+  const editUserButtons = document.querySelectorAll(".edit-user");
+  editUserButtons.forEach(button => {
+    button.addEventListener("click", function (event) {
+      event.preventDefault();
+  
+      const userId = this.getAttribute("data-user-id");
+  
+      // Set the user_id in the hidden input field
+      document.getElementById("updateUserId").value = userId;
+  
+      // Call the function to populate and display the modal with user data
+      populateUpdateUserModal(userId);
+    });
+  });
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    // Common elements for both create and update modals
+    const selectMembersInput = document.getElementById("selectMembers");
+    const autocompleteSuggestions = document.getElementById("autocomplete-suggestions");
+    const updateSelectMembersInput = document.getElementById("updateSelectMembers");
+    const updateAutocompleteSuggestions = document.getElementById("updateAutocompleteSuggestions");
+    const memberList = document.querySelector(".member-list");
+    const selectedUserIds = new Set(); // Keep track of selected user IDs
+
+    // Function to handle autocomplete suggestions
+    const handleAutocomplete = (inputElement, suggestionElement, memberListElement) => {
+      inputElement.addEventListener("input", function () {
+        const inputText = inputElement.value.trim();
+
+        if (inputText === "") {
+          suggestionElement.innerHTML = "";
+          return;
+        }
+
+        fetch(`/autocomplete-users/?q=${inputText}`)
+          .then(response => response.json())
+          .then(data => {
+            const suggestionsHTML = data.map(user => `<div class="autocomplete-item" data-id="${user.id}">${user.name}</div>`).join("");
+            suggestionElement.innerHTML = suggestionsHTML;
+          });
+      });
+
+      inputElement.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+
+          const selectedSuggestion = suggestionElement.querySelector(".autocomplete-item.highlighted");
+          if (selectedSuggestion) {
+            const selectedId = selectedSuggestion.getAttribute("data-id");
+            const selectedName = selectedSuggestion.textContent;
+
+            // Check if the user is not already selected
+            if (!selectedUserIds.has(selectedId)) {
+              addMemberToMemberList(selectedId, selectedName, memberListElement);
+              inputElement.value = "";
+              suggestionElement.innerHTML = "";
+            }
+          }
+        }
+      });
+
+      suggestionElement.addEventListener("click", function (event) {
+        if (event.target.classList.contains("autocomplete-item")) {
+          const selectedId = event.target.getAttribute("data-id");
+          const selectedName = event.target.textContent;
+
+          // Check if the user is not already selected
+          if (!selectedUserIds.has(selectedId)) {
+            addMemberToMemberList(selectedId, selectedName, memberListElement);
+            inputElement.value = "";
+            suggestionElement.innerHTML = "";
+          }
+        }
+      });
+    };
+
+    // Call the autocomplete function for both input fields
+    handleAutocomplete(selectMembersInput, autocompleteSuggestions, memberList);
+    handleAutocomplete(updateSelectMembersInput, updateAutocompleteSuggestions, document.querySelector(".update-member-list"));
+
+    // Function to add a member to the member list
+    const addMemberToMemberList = (id, name, memberListElement) => {
+      if (!selectedUserIds.has(id)) {
+        selectedUserIds.add(id);
+
+        const memberDiv = document.createElement("div");
+        memberDiv.className = "update-member";
+        memberDiv.innerHTML = `
+          <div class="member-info">
+            <span class="member-initials mx-2">${name.slice(0, 2).toUpperCase()}</span>
+            <span class="member-name mx-2">${name}</span>
+            <span class="member-remove mx-2"><i class="bi bi-x-circle"></i></span>
+            <input type="hidden" name="selected_users" value="${id}">
+          </div>
+        `;
+        memberListElement.appendChild(memberDiv);
+
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = "selected_users";
+        hiddenInput.value = id;
+        memberDiv.appendChild(hiddenInput);
+
+        const memberRemoveIcon = memberDiv.querySelector(".member-remove");
+        memberRemoveIcon.addEventListener("click", () => {
+          selectedUserIds.delete(id);
+          memberListElement.removeChild(memberDiv);
+        });
+      }
+    };
+
+    // Function to populate the update-member-list with existing project users
+    const populateUpdateMemberList = (projectUsers, memberListElement) => {
+      memberListElement.innerHTML = ""; // Clear existing member list
+
+      projectUsers.forEach(user => {
+        const memberItem = document.createElement("div");
+        memberItem.className = "member-item";
+        memberItem.innerHTML = `
+          <div class="member-info">
+            <span class="member-initials mx-2">${user.name.slice(0, 2).toUpperCase()}</span>
+            <span class="member-name mx-2">${user.name}</span>
+            <span class="member-remove mx-2"><i class="bi bi-x-circle"></i></span>
+          </div>
+          <input type="hidden" name="selected_users" value="${user.id}">
+        `;
+
+        const memberRemoveIcon = memberItem.querySelector(".member-remove");
+        memberRemoveIcon.addEventListener("click", () => {
+          memberListElement.removeChild(memberItem);
+          selectedUserIds.delete(user.id);
+        });
+
+        memberListElement.appendChild(memberItem);
+        selectedUserIds.add(user.id); // Add to the selected users set
+      });
+    };
+
+    // Update project functionality
+    const editButtons = document.querySelectorAll(".edit-project");
+    editButtons.forEach(button => {
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        // Get the project ID from the data-project-id attribute
+        const projectId = this.getAttribute("data-project-id");
+
+        // Get the modal for updating the project
+        const updateProjectModal = document.getElementById("updateProject");
+
+        // Inside your edit button click event listener
+        if (projectId) {
+          // Set the project ID in the hidden input field of the update modal
+          updateProjectModal.querySelector("#updateProjectId").value = projectId;
+
+          // Fetch the project data based on the project ID
+          fetch(`/get-project-data/?project_id=${projectId}`)
+            .then(response => response.json())
+            .then(data => {
+              // Populate the update modal with the project data
+              updateProjectModal.querySelector("#updateProjectName").value = data.title;
+              updateProjectModal.querySelector("#updateTotalHours").value = data.total_hours;
+              updateProjectModal.querySelector("#updateStartDate").value = data.start_date;
+              updateProjectModal.querySelector("#updateDueDate").value = data.due_date;
+
+              // Populate the update-member-list with existing project users
+              const memberList = updateProjectModal.querySelector(".update-member-list");
+              populateUpdateMemberList(data.selected_users, memberList);
+
+              // Open the update modal
+              $('#updateProject').modal('show');
+            });
+        } else {
+          // ... (rest of the code for creating a new project)
+        }
+      });
+    });
+
+
+
+  });
+</script>
+
+
+
+
+
+
+<script src="{% static 'assets/js/index.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,596 @@
+
+.Group89 {
+    width: 100%;
+    max-width: 897px;
+
+    position: relative;
+    display: flex; /* Use flexbox for layout */
+ 
+
+}
+
+/* Styles for individual elements */
+.User, .RequestedTimeInHrs, .UsedTimeInHrs, .RemainingTime, .RequestDetails {
+    opacity: 0.50;
+    color: black;
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    line-height: 20px;
+    word-wrap: break-word;
+    margin-bottom: 10px; /* Add margin to separate elements */
+}
+
+/* Styles for responsive adjustments */
+@media (max-width: 768px) {
+    .Group89 {
+        max-width: 100%; /* Full width for small screens */
+    }
+}
+.card {
+    border-radius: 10px;
+    border: none;
+}
+
+.line {
+    border: 0.50px rgba(0, 0, 0, 0.10) solid;
+    margin-top: 5px;
+}
+
+.ellipse {
+    border-radius: 9999px;
+}
+
+.total-requested-time {
+    opacity: 0.80;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.time-div{
+  width: 117px;
+height: 40px;
+flex-shrink: 0;
+border-radius: 4px;
+background: #D9D9D9;
+
+}
+.time-div2{
+  width: 117px;
+height: 40px;
+flex-shrink: 0;
+border-radius: 4px;
+background: #D9D9D9;
+
+}
+
+.hrs {
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 40px;
+  display: block; 
+  text-align: center; 
+  margin: 0 auto; 
+
+   
+}
+
+.all-hrs{
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 40px;
+  display: block; 
+  text-align: center; 
+  margin: 0 auto;   /* text-align: center; */
+
+}
+
+.requested-date {
+    opacity: 0.80;
+    font-size: 16px;
+}
+
+.oct-2023 {
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: DM Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 111.111% */
+
+}
+
+.request-status {
+    font-size: 16px;
+}
+.view-text{
+  color: #949494;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 125% */
+}
+.btn-pending {
+  background-color: #FFE8D8;
+  color: #E37931;
+  border: #EA8846;
+  border-radius: 4px;
+  width: 118px;
+  height: 40px;
+  flex-shrink: 0;
+  padding-left: 15px;
+
+}
+.btn-pending1  {
+  background-color: #FFE8D8;
+  color: #E37931;
+  border: #EA8846;
+  border-radius: 4px;
+  width: 118px;
+  height: 40px;
+  flex-shrink: 0;
+  padding-left: 24px;
+  padding-top: 8px;
+}
+.btn-approved {
+  border-radius: 4px;
+  border: #00A32E;
+  background: #E0FFE9;
+  color: #00A32E;
+  border-radius: 4px;
+  width: 118px;
+  height: 40px;
+  flex-shrink: 0;
+  padding-left: 10px;
+
+}
+.btn-approved1 {
+  border-radius: 4px;
+  border: #00A32E;
+  background: #E0FFE9;
+  color: #00A32E;
+  border-radius: 4px;
+  width: 118px;
+  height: 40px;
+  flex-shrink: 0;
+  padding-left: 22px;
+  padding-top: 7px;
+}
+.btn-edit {
+  background-color: #19BDA2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+
+  width: 121px;
+  height: 40px;
+
+
+}
+.edit-text{
+  color: #FFF;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 18px;
+font-style: normal;
+font-weight: 700;
+line-height: 20px; /* 111.111% */
+}
+.btn-save {
+  background-color: #FF5858;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  
+  width: 121px;
+  height: 40px;
+}
+.btn-delete{
+  width: 120px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 5px;
+border: 1px solid #4941CD;
+background: #FFF;
+color: #4941CD;
+}
+
+
+.custom-button {
+    width: 182px;
+    height: 40px;
+    position: absolute;
+    left: 1282px;
+    top: 200px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);
+    border: none;
+    transition: background-color 0.3s ease-in-out;
+  }
+  .custom-button:hover {
+    background: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);
+    filter: brightness(0.9);
+  }
+  .custom-button .RequestAllotment {
+    color: white;
+    font-size: 14px;
+    font-family: "DM Sans";
+    font-weight: 700;
+    line-height: 17px;
+    word-wrap: break-word;
+    position: relative;
+    top: 0;
+    transform: translateY(-50%);
+    left: 29px;
+  }
+  .inline-container {
+    display: flex;
+    align-items: center;
+  }
+  .inline-container .ellipse {
+    margin-right: 10px; /* Adds some spacing between the image and the text */
+  }
+
+.breadcrumb-item+.breadcrumb-item::before {
+float: left;
+padding-right: var(--bs-breadcrumb-item-padding-x);
+color: var(--bs-breadcrumb-divider-color);
+content:  ">";
+}  
+button.req-btn {
+  background-image: linear-gradient(to right, #4776E6, #8E54E9);
+  color: white;
+  border-radius: 5px;
+  border: 1px solid #8E54E9;
+  float: right; /* Float the button to the right */
+  margin-left: 10px; /* Add some margin to separate it from the "User Wise" button */
+}
+.user-btn {
+  width: 157px;
+  height: 36px;
+  flex-shrink: 0;
+flex-shrink: 0;
+border-radius: 5px;
+border: 1px solid #4941CD;
+background: #FBFBFB;
+margin-top: 15px;
+}
+@media (max-width: 1069px) {
+  .user-btn{
+   display: none;
+  }
+}
+.user-text{
+  color: #4941CD;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: DM Sans;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 125% */
+
+}
+/* .sidebar{
+
+position: fixed;
+top: 60px;
+left: 0;
+bottom: 0;
+width: 250px;
+z-index: 996;
+transition: all 0.3s;
+padding: 20px;
+overflow-y: auto;
+scrollbar-width: thin;
+scrollbar-color: #aab7cf transparent;
+box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
+background-color: #fff;
+}
+/* Custom styles for slim scrollbar */
+.custom-scrollbar {
+max-height: 300px; /* Adjust the max height as needed */
+overflow-y: scroll;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+width: 12px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+background-color: rgba(0, 0, 0, 0.1);
+border-radius: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+background-color: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:vertical {
+background-color: rgba(0, 0, 0, 0.1);
+border-radius: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:horizontal {
+background-color: rgba(0, 0, 0, 0.1);
+border-radius: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+background-color: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:horizontal:hover {
+background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Additional styling */
+.custom-scrollbar::-webkit-scrollbar-button {
+display: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track-piece {
+background-color: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:horizontal:active {
+background-color: rgba(0, 0, 0, 0.6);
+} */
+
+.table th {
+border: none;
+}
+
+.editable-input {
+border: 1px solid lightgray;
+padding: 5px;
+background-color: #f9f9f9;
+width:100%;
+}
+.edit-button {
+background-color: #007bff;
+color: white;
+border: none;
+padding: 5px 10px;
+cursor: pointer;
+}
+.remove-btn {
+width: 109px;
+height: 39px;
+background: #FFE0E0;
+ border-radius: 8px; 
+ border: 0.50px #FF5858 solid;
+ color: #FF5858;
+  font-size: 16px; 
+  font-family: DM Sans;
+   font-weight: 400; 
+  line-height: 15px;
+  word-wrap: break-word;
+}
+.new-btn{
+width: 109px; 
+height: 39px;
+background: #E0E9FF; 
+border-radius: 8px; 
+border: 0.50px #574EE9 solid;
+color: #6C64E7; 
+font-size: 16px;
+font-family: DM Sans;
+font-weight: 400; 
+line-height: 15px;
+word-wrap: break-word;
+ 
+}
+
+
+.req-label{
+
+        margin-right: 7rem!important;
+        margin-left: 0rem!important;
+    
+}
+
+
+
+.new-style{
+    font-family: DM Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #FF5858;    
+}
+.req-detail-style {
+    font-family: DM Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0px;
+    text-align: left;
+    opacity: 0.5;
+  }
+.req-hr-style{
+    font-family: DM Sans;
+font-size: 14px;
+font-weight: 400;
+line-height: 20px;
+letter-spacing: 0px;
+text-align: left;
+opacity: 0.5;
+
+}
+.req-time-style{
+    font-family: DM Sans;
+font-size: 14px;
+font-weight: 400;
+line-height: 20px;
+letter-spacing: 0px;
+text-align: left;
+opacity: 0.5;
+}
+.user-req-style{
+    font-family: DM Sans;
+font-size: 16px;
+font-weight: 400;
+line-height: 20px;
+letter-spacing: 0px;
+text-align: left;
+opacity: 0.5;
+}
+.req-index{
+    font-family: DM Sans;
+font-size: 16px;
+font-weight: 400;
+line-height: 20px;
+letter-spacing: 0px;
+text-align: left;
+opacity: 0.5;
+}
+/* CSS to position individual table headers */
+.custome-table th:nth-child(1) {
+    /* Adjust the position for the first header */
+    position: relative;
+    left: 22px; 
+    bottom: 10px;
+  }
+  
+  .custome-table th:nth-child(2) {
+    /* Adjust the position for the second header */
+    position: relative;
+    left: 142px;
+    bottom: 10px;
+  }
+  
+  .custome-table th:nth-child(3) {
+    /* Adjust the position for the third header */
+    position: relative;
+    left: 255px;
+   
+  }
+  
+  /* Add more styles for other headers as needed */
+  .custome-table th:nth-child(4) {
+    /* Adjust the position for the third header */
+    position: relative;
+    left: 277px; 
+   
+  }
+/* Style for the 5th and 6th headers */
+.custome-table th:nth-child(5){
+  position: relative;
+  bottom: 10px;
+  left: 297px;
+}
+.custome-table th:nth-child(6) {
+  position: relative;
+  bottom: 10px;
+  left: 457px; 
+}
+
+
+.icon-img{
+  margin-bottom:3px
+}
+
+.new-card{
+  border-radius: 6px;
+  max-width: 740px; margin: 0 auto; 
+}
+/* Styles for responsive adjustments */
+@media (max-width: 768px) {
+  .card-content-container {
+    overflow: auto; /* Enable scrolling for the card content */
+  }
+
+  .row[data-allotment-id] {
+    display: flex;
+    align-items:center;
+  }
+
+  .col-md-2 {
+    width: 15%; /* Adjust the width of the columns as needed */
+    text-align: center;
+  }
+
+  .col-md-4.inline-container {
+    width: 40%; /* Adjust the width of the columns as needed */
+  }
+
+  .inline-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .inline-container .ellipse {
+    margin-right: 10px; /* Adds some spacing between the image and the text */
+  }
+}
+
+/* Add the following styles for responsive adjustments */
+@media (max-width: 768px) {
+  .Group89 {
+    flex-direction: column; /* Change to column layout on smaller screens */
+  }
+
+  .User,
+  .RequestedTimeInHrs,
+  .UsedTimeInHrs,
+  .RemainingTime,
+  .RequestDetails,
+  .total-requested-time,
+  .requested-date,
+  .oct-2023,
+  .request-status,
+  .view-text,
+  .btn-pending,
+  .btn-pending1,
+  .btn-approved,
+  .btn-approved1,
+  .btn-edit,
+  .edit-text,
+  .btn-save,
+  .btn-delete,
+  .custom-button,
+  .inline-container,
+  .breadcrumb-item+.breadcrumb-item::before,
+  .time-div,
+  .time-div2 {
+    width: 100%; /* Make elements full-width on smaller screens */
+  }
+
+  .custom-button {
+    left: 0; /* Adjust the position of the button on smaller screens */
+  }
+  .btn-delete{
+    margin-bottom: 10px;
+    width: 97%;
+  }
+  .btn-save{
+    width: 97%;
+  }
+  .btn-edit{
+    width: 97%;
+  }
+}
+@media (max-width: 1069px) {
+  .custome-table{
+   display: none;
+  }
+}
+@media (max-width: 1069px) {
+  .custome-table{
+   display: none;
+  }
+}

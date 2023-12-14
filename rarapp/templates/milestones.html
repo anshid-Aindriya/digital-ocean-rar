@@ -1,0 +1,323 @@
+{% extends 'layouts/main.html' %} {% block content %}
+{% load static %}
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'assets/css/milestones.css' %}">
+
+<div class="pagetitle mt-3">
+  <h3 style="color: #4941CD;">Project Name</h3>
+  <h1>{{ project_data.title }}</h1>
+  <span class="view-text">view by <button class="user-btn mx-2"><span class="">Newest First</span> <img class="icon-img mx-2" src="{% static 'assets/img/caret-down.svg' %}" alt="icon"> </button></span>
+  <button class="req-btn mt-2" data-bs-toggle="modal" data-bs-target="#AddPhase">
+    Create New Phase
+  </button>
+</div>
+
+<section>
+  <!-- Display success or error messages here -->
+  {% if request.GET.success_message %}
+    <div class="alert alert-success" role="alert">
+      {{ request.GET.success_message }}
+    </div>
+  {% endif %}
+  {% if request.GET.error_message %}
+    <div class="alert alert-danger" role="alert">
+      {{ request.GET.error_message }}
+    </div>
+  {% endif %}
+
+  <div class="row mx-1">
+    {% if milestones %}
+      {% for milestone in milestones %}
+        <div class="card custom-overflow mt-3" style="border: none;">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="d-flex">
+                  <h5 class="phase">Phase {{ forloop.revcounter }}</h5>
+                  <span class="mx-2 phase-title">{{ milestone.title }}</span>
+                </div>
+              </div>
+              <div class="col-md-6 text-end">
+                <div class="user dropdown mt-2">
+                  <a href="#" class="" data-bs-toggle="dropdown" aria-expanded="false" style="color: black">
+                    <img class="dot-img" src="{% static 'assets/img/dot-three.svg' %}" alt="icon">
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item edit-milestone" href="#" data-milestone-id="{{ milestone.id }}" data-bs-toggle="modal" data-bs-target="#EditMilestone">Edit</a></li>
+                    <li>
+                      <a class="dropdown-item delete-user" href="#" data-bs-toggle="modal" data-bs-target="#DelMilestone" data-user-id="{{ milestone.id }}|{{ project_data.id }}">Delete</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- First card in the same row -->
+            <div class="row">
+              <div class="col-md-4">
+                <div class="card custom-overflow" style="border: none; border-radius: 10px; background: #F0F0FF; box-shadow: none;">
+                  <div class="card-body">
+                    <p class="card-text text-center rel-text">Release Date</p>
+                    <p class="card-text text-center rel-subtext">{{ milestone.release_date }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Second card in the same row -->
+              <div class="col-md-4">
+                <div class="card custom-overflow" style="border: none; border-radius: 10px; background: #F0F0FF; box-shadow: none;">
+                  <div class="card-body">
+                    <p class="card-text text-center rel-text">Expected Completion Date</p>
+                    <p class="card-text text-center rel-subtext">{{ milestone.expected_date }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Third card in the same row -->
+              <div class="col-md-4">
+                <div class="card custom-overflow" style="border: none; border-radius: 10px; background: #F0F0FF; box-shadow: none;">
+                  <div class="card-body">
+                    <p class="card-text text-center rel-text">Actual Completion Date</p>
+                    <p class="card-text text-center rel-subtext">{{ milestone.actual_date }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fourth card in the same row with dashed border -->
+              <div class="col-md-4">
+                <div class="card bg-light custom-overflow" style="border: none; border-radius: 10px; background: #F0F0FF; box-shadow: none;">
+                  <div class="card-body" style="border: 1px dashed #1d1c1c; text-align: center; background-color: #ffff">
+                    <p class="card-text mt-2 task-text">Number of Tasks:</p>
+                    <span class="task-subtext">{{ milestone.total_tasks }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fifth card in the same row with progress bar -->
+              <div class="col-md-8">
+                <p class="card-text percent-text">Percentage of Completion</p>
+                <div class="d-flex align-items-center">
+                  <div class="progress flex-grow-1" style="height: 10px; margin-right: 10px;">
+                    {% with completed_tasks=milestone.completed_tasks|default:"0"|add:0 total_tasks=milestone.total_tasks|default:"0"|add:0 %}
+                      {% if total_tasks != 0 %}
+                        <div class="progress-bar" role="progressbar" style="width: {{ milestone.completion_percentage }}%; background-color: #FB508F;" aria-valuenow="{{ milestone.completion_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                      {% endif %}
+                    {% endwith %}
+                  </div>
+                  <p style="margin: 0; color: #FB508F;">
+                    {% if milestone.total_tasks != 0 %}
+                      {{ milestone.completion_percentage }}%
+                    {% else %}
+                      0%
+                    {% endif %}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="col-md-12">
+        <div>
+          <p>No milestones available for this project.</p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+    <!-- Add Phase -->
+      
+<div class="modal fade" id="AddPhase" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header" style="border: none;">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'milestone' project_id=project_data.id %}">
+                  {% csrf_token %}
+                    <div class="custom-form-group">
+                      <h2 class="text-center mb-4">Create New Project</h2>
+                      <label for="name" class="custom-label">Name of the Phase</label>
+                      <input type="text" class="custom-form-control" id="name" name="name" required>
+                    </div>
+                    <div class="custom-form-row">
+                      <div class="custom-form-group">
+                        <label for="releaseDate" class="custom-label">Release Date</label>
+                        <input type="date" class="custom-form-control" id="releaseDate" name="releaseDate" required>
+                      </div>
+                      <div class="custom-form-group">
+                        <label for="expectedCompletionDate" class="custom-label">Expected Completion Date</label>
+                        <input type="date" class="custom-form-control" id="expectedCompletionDate" name="expectedCompletionDate" required>
+                      </div>
+                      <div class="custom-form-group">
+                        <label for="actualCompletionDate" class="custom-label">Actual Completion Date</label>
+                        <input type="date" class="custom-form-control" id="actualCompletionDate" name="actualCompletionDate" required> 
+                      </div>
+                    </div>
+                    <div class="custom-form-row">
+                      <div class="custom-form-group">
+                        <label for="completedTasks" class="custom-label">Completed Tasks</label>
+                        <input type="number" class="custom-form-control" id="completedTasks" name="completedTasks" value="0" required>
+                      </div>
+                      <div class="custom-form-group">
+                        <label for="totalTasks" class="custom-label">Total Tasks</label>
+                        <input type="number" class="custom-form-control" id="totalTasks" name="totalTasks" value="0" required>
+                      </div>
+                    </div>
+                  
+            
+            </div>
+            <div class=" d-flex justify-content-center mb-3" style:"border:none;">
+                <button type="submit" class="btn " style="background-image: linear-gradient(to right, #4776E6, #8E54E9);color:#fff">Create</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>  
+
+<!-- Update Milestone -->
+<div class="modal fade" id="EditMilestone" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="border: none;">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'update_milestone' %}">
+          {% csrf_token %}
+          <div class="custom-form-group">
+            <h2 class="text-center mb-4">Update Milestone</h2>
+            <input type="hidden" name="milestone_id" id="edit_milestone_id" value="">
+            <label for="edit_name" class="custom-label">Name of the Phase</label>
+            <input type="text" class="custom-form-control" id="edit_name" name="edit_name" required>
+          </div>
+          <div class="custom-form-row">
+            <div class="custom-form-group">
+              <label for="edit_releaseDate" class="custom-label">Release Date</label>
+              <input type="date" class="custom-form-control" id="edit_releaseDate" name="edit_releaseDate" required>
+            </div>
+            <div class="custom-form-group">
+              <label for="edit_expectedCompletionDate" class="custom-label">Expected Completion Date</label>
+              <input type="date" class="custom-form-control" id="edit_expectedCompletionDate" name="edit_expectedCompletionDate" required>
+            </div>
+            <div class="custom-form-group">
+              <label for="edit_actualCompletionDate" class="custom-label">Actual Completion Date</label>
+              <input type="date" class="custom-form-control" id="edit_actualCompletionDate" name="edit_actualCompletionDate" required>
+            </div>
+          </div>
+          <div class="custom-form-row">
+            <div class="custom-form-group">
+              <label for="edit_completedTasks" class="custom-label">Completed Tasks</label>
+              <input type="number" class="custom-form-control" id="edit_completedTasks" name="edit_completedTasks" value="0" required>
+            </div>
+            <div class="custom-form-group">
+              <label for="edit_totalTasks" class="custom-label">Total Tasks</label>
+              <input type="number" class="custom-form-control" id="edit_totalTasks" name="edit_totalTasks" value="0" required>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center mb-3 mt-3" style="border: none;">
+            <button type="submit" class="btn" style="background-image: linear-gradient(to right, #4776E6, #8E54E9); color: #fff">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Delete Milestone -->
+<div class="modal fade" id="DelMilestone" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header text-center d-flex justify-content-center">
+              <h5 class="modal-title">Delete User</h5>
+          </div>
+          <div class="modal-body text-center"> <!-- Center text -->
+              <p>Are you sure you want to delete?</p>
+              <form id="deleteForm" method="post" action="{% url 'delete-milestone' %}">
+                {% csrf_token %}
+                <input type="hidden" name="id" id="milestonedelIdInput" value="">
+                <input type="hidden" name="project_id" id="projectIdInput" value="">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn" style="color: #fff; background:  #19BDA2;">Delete</button>
+            </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- jQuery UI CSS -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
+  <!-- jQuery UI JS -->
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+    $(".delete-user").click(function () {
+        var userData = $(this).data("user-id").split("|"); // Split the value by the delimiter
+        var milestoneId = userData[0];
+        var projectId = userData[1];
+        $("#milestonedelIdInput").val(milestoneId);
+        $("#projectIdInput").val(projectId); // Assuming you have an input field for project_data.id
+    });
+</script>
+
+
+  <script>
+    $(document).ready(function () {
+      // Handle the click event of the "Edit" option for a milestone in the dropdown menu
+      $(".edit-milestone").on("click", function (event) {
+        event.preventDefault(); // Prevent the default link behavior
+  
+        // Retrieve milestone ID from data attribute
+        var milestoneId = $(this).data("milestone-id");
+  
+        console.log("Edit button clicked. Milestone ID:", milestoneId);
+  
+        // Use AJAX to fetch milestone data from the server (replace with your own implementation)
+        $.ajax({
+          url: "{% url 'fetch_milestone_data' %}", // Replace with the correct URL
+          method: "GET",
+          data: { milestone_id: milestoneId },
+          success: function (data) {
+            console.log("Milestone Data:", data); // Log the data
+  
+            // Populate the "EditMilestone" modal with the retrieved data
+            $("#edit_milestone_id").val(data.id);
+            $("#edit_name").val(data.title);
+            $("#edit_releaseDate").val(data.releaseDate);
+            $("#edit_expectedCompletionDate").val(data.expectedCompletionDate);
+            $("#edit_actualCompletionDate").val(data.actualCompletionDate);
+            $("#edit_completedTasks").val(data.completedTasks);
+            $("#edit_totalTasks").val(data.totalTasks);
+  
+            console.log("Modal populated with data.");
+          },
+          error: function () {
+            console.error("Error fetching milestone data"); // Log any errors
+          },
+        });
+  
+        // Open the "EditMilestone" modal
+        $("#EditMilestone").modal("show");
+  
+        console.log("EditMilestone modal opened.");
+      });
+    });
+  </script>
+  
+  
+
+    <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"
+  ></script>
+   
+  {% endblock %}

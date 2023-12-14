@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'assets/css/login.css' %}">
+      <!-- Favicons -->
+  <link href="{% static 'assets/img/aindriya.png' %}" rel="icon">
+  <link href="{% static 'assets/img/aindriya.png' %}" rel="aindriya-icon">
+    <title>Login Page</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+ <!--Load Spinner -->
+ <div class="custom-spinner">
+    <div class="loader"></div>
+  </div>
+  
+  
+  
+
+    <div class="container" >
+        <div class="form-container">
+            <div class="login-form">
+                <div class="logo">
+                    <span style="display: inline-block;">
+                        <img src="{% static 'assets/img/aindriya.png' %}" alt="" srcset="">
+                    </span>
+                    <span style="display: inline-block; text-align: left;"><b>A</b>indriya<br><b>M</b>anagement<br><b>S</b>oftware</span>
+                </div>
+    
+                <h2>Login</h2>
+                <form action="{% url 'login' %}" method="post">
+                    <div>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    
+                    {% csrf_token %}
+                    <input type="text" name="email" placeholder="Your Email" required>
+                   
+
+                    <input type="password" name="password" placeholder="Your Password" required>
+                    
+                    <div class="forgot-password">
+                        <!-- Simple link -->
+                        <a href="{% url 'forgot-password' %}" class="for-style">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="log-style gradient-color">Login</button>
+                    <div class="d-flex align-items-center reg-style">
+                        <span class="new-text">New to AMS?</span>
+                        <a href="{% url 'register' %}" style="text-decoration: none;" class="reg-text">Register Now</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="image-container">
+            <img src="{% static 'assets/img/Frame.png' %}" alt="" srcset="" style="width: 200%; height: auto; max-width: 500px;">
+        </div>
+    </div>
+    
+    <script>
+        window.addEventListener("load", function () {
+          document.querySelector('.custom-spinner').style.display = 'none';
+        });
+      </script>
+      
+    
+</body>
+</html>
