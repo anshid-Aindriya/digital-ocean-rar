@@ -161,12 +161,13 @@
 
         <li class="nav-item dropdown pe-3">
 
+       
           <a class="nav-link nav-profile d-flex " href="#" data-bs-toggle="dropdown">
             <div class="d-flex align-items-center prof-style">
               <img src="{% static 'assets/img/836.jpg' %}" alt="Profile" class="nav-profile">
               <span class="d-none d-md-block dropdown-toggle ps-2" style="color: #000000;">
                 {% if request.session.Name %}
-                  {{ request.session.Name }}
+                  {{ request.session.Name|slice:":8" }}
                 {% else %}
                   Guest
                 {% endif %}

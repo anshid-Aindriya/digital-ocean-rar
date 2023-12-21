@@ -27,7 +27,7 @@ SECRET_KEY = os.getenv('SECRET_KEY','django-insecure-uom5r3_x@wktnclx(hh@m)+##jv
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['64.227.155.89','ams.aindriya.co.in']
+ALLOWED_HOSTS = ['127.0.0.1','64.227.155.89','ams.aindriya.co.in']
 
 
 # Application definition
@@ -74,12 +74,23 @@ WSGI_APPLICATION = 'rar.wsgi.application'
 
 
    
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'rar_db',
+#         'USER': 'rar',
+#         'PASSWORD':'RaR@#P@ssw0rD',
+#         'HOST':'localhost',
+#         'PORT':'3306'
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'rar_db',
-        'USER': 'rar',
-        'PASSWORD':'RaR@#P@ssw0rD',
+        'USER': 'root',
+        'PASSWORD':'',
         'HOST':'localhost',
         'PORT':'3306'
     }

@@ -174,13 +174,14 @@
               <img src="{% static 'assets/img/836.jpg' %}" alt="Profile" class="nav-profile">
               <span class="d-none d-md-block dropdown-toggle ps-2" style="color: #000000;">
                 {% if request.session.Name %}
-                  {{ request.session.Name }}
+                  {{ request.session.Name|slice:":8" }}
                 {% else %}
                   Guest
                 {% endif %}
               </span>
             </div>
           </a>
+          
             {% if request.session.adminId %}
           <div class="nav-text hide-on-small-screen">Admin</div>
           {% else %}

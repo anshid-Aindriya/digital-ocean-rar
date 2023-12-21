@@ -89,13 +89,16 @@ div[role="roundprogressbar"] {
   .view-all {
     color: #000000;
     text-align: left;
-    font: 400 14px/20px "DM Sans", sans-serif;
+    font:"DM Sans", sans-serif;
+    font-weight: bold;
+  font-size: 10px;
+  
   }
 
   .inner-card {
     width: 212px;
     height: 50px;
-    background: rgba(0, 0, 0, 0.04);
+    background: rgba(59, 55, 55, 0.04);
     border-radius: 8px;
     padding: 10px;
     display: flex;

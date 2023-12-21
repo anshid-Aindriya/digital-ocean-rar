@@ -48,30 +48,35 @@
                 <!-- Right Column (Time Consumed) -->
                 <div class="col-md-5">
                     <div class="card-title time-consumed">Time Consumed <p>(in hrs)</p></div>
+                    
                     <div class="d-flex justify-content-between mt-3">
                         <div class="card-text">Total Allotted Time</div>
                         <div class="card-text number-color">{{ total_allotted_time }}</div>
                     </div>
-    
+                
                     <div class="d-flex justify-content-between">
                         <div class="card-text">Consumed Time</div>
                         <div class="card-text number-color">{{ consumed_time }}</div>
                     </div>
-    
+                
                     <div class="d-flex justify-content-between">
                         <div class="card-text">Remaining Time</div>
                         <div class="card-text number-color">{{ total_remaining_time }}</div>
                     </div>
-                    <div class="progress mt-3">
-                        <div class="progress-bar" role="progressbar"
-                            style="width: {{ completion_status_percentage_rounded }}%;background: linear-gradient(179.84deg, #F857A6 -36.18%, #FF5858 94.04%);"
-                            aria-valuenow="{{ completion_status_percentage }}"
-                            aria-valuemin="0"
-                            aria-valuemax="100">
-                            <span style="margin-left: 20%;">{{ completion_status_percentage }}%</span>
+                
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="progress" style="width: 200px;">
+                            <div class="progress-bar" role="progressbar"
+                                style="width: {{ completion_status_percentage_rounded }}%; background: linear-gradient(179.84deg, #F857A6 -36.18%, #FF5858 94.04%);"
+                                aria-valuenow="{{ completion_status_percentage }}"
+                                aria-valuemin="0"
+                                aria-valuemax="100">
+                            </div>
                         </div>
+                        <span class="" style="margin-left: 4px;">{{ completion_status_percentage }}%</span>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -167,7 +172,7 @@
                                 scales: {
                                     x: {
                                         beginAtZero: true,
-                                        max: {{ total_allotted_time }} // Adjust the maximum value of the x-axis scale
+                                        max: {{ total_allotted_time_percentage }} // Adjust the maximum value of the x-axis scale
                                         
                                     },
                                     y: {
