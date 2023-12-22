@@ -90,7 +90,7 @@
             </div>
           </div>
           <h3 class="mt-3">Total Hours Required</h3>
-          <input type="text" class="form-control mx-auto total-hours-input" style="width: 100px" data-user-time="{{ user_time }}" />
+          <input type="text" class="form-control mx-auto total-hours-input" style="width: 100px"  />
         </div>
         <div class="modal-footer d-flex justify-content-center" style="border: none">
           <button type="submit" class="btn" style="background-image: linear-gradient(to right, #4776e6, #8e54e9); color: #fff;" name="action" value="request">Request</button>
@@ -109,12 +109,22 @@
     const dynamicRowsContainer = document.getElementById("dynamic-rows-container");
     const newRowButton = document.getElementById("new-row-button");
     const totalHoursInput = document.querySelector(".total-hours-input");
+    const hoursField = document.querySelector('input[name="hours[]"]');
 
     let rowCounter = 0;
     const selectedUserIds = new Set(); // Store selected user IDs
 
-    // Add an event listener for the "Edit" button
+    hoursField.addEventListener("input", function() {
+      // Update the value of the total hours input
+      updateTotalHours();
+  });
+ function updateTotalHours() {
+        // Get the value of the hours field
+        const hoursValue = parseFloat(hoursField.value) || 0;
 
+        // Update the value of the total hours input
+        totalHoursInput.value = hoursValue.toFixed(2); // Displaying with two decimal places, adjust as needed
+    }
     // Function to calculate and update the total user time
     function calculateTotalUserTime() {
         const userTimeInputs = document.querySelectorAll('input[name^="hours_"]');
@@ -134,6 +144,7 @@
 
         const selectedUserField = document.querySelector(`select[name="selected_user[]"]`);
         const hoursField = document.querySelector(`input[name="hours[]"]`);
+        console.log("hou:",hoursField)
 
         // Get the selected user ID and name
         const userId = selectedUserField.value;
@@ -141,6 +152,7 @@
 
         // Get the entered hours
         const hours = hoursField.value;
+        console.log("H:",hours)
 
         // Add the selected user to the set of selected users
         selectedUserIds.add(userId);

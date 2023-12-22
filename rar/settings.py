@@ -1,4 +1,3 @@
-
 """
 Django settings for rar project.
 
@@ -24,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY','django-insecure-uom5r3_x@wktnclx(hh@m)+##jvt*ivlk2g_slnt#!70gg$s*0')
 
-
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','64.227.155.89','ams.aindriya.co.in']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','64.227.155.89','ams.aindriya.co.in']
 
 
 # Application definition
@@ -44,6 +43,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -74,6 +74,16 @@ WSGI_APPLICATION = 'rar.wsgi.application'
 
 
    
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'newdb',
+        'USER': 'newuser',
+        'PASSWORD':'newpassword',
+        'HOST':'localhost',
+        'PORT':''
+    }
+  }
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
@@ -85,19 +95,9 @@ WSGI_APPLICATION = 'rar.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'rar_db',
-        'USER': 'root',
-        'PASSWORD':'',
-        'HOST':'localhost',
-        'PORT':'3306'
-    }
-}
 
 
-
+# Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -128,16 +128,25 @@ USE_I18N = True
 USE_TZ = True
 
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
 
 STATIC_URL = '/static/'
 STATIC_ROOT =BASE_DIR/'static'
 
+# STATIC_ROOT is the absolute filesystem path to the directory where the collected static files will be stored.
+# STATIC_ROOT = BASE_DIR/'assets'
+
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-MEDIA_URL = '/media/' 
-MEDIA_ROOT = BASE_DIR / 'media'  
+MEDIA_URL = '/media/'  # This should be a string
+MEDIA_ROOT = BASE_DIR / 'media'  # This should be a directory path
 
 
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
