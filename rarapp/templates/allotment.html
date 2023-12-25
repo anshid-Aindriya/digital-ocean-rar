@@ -90,7 +90,7 @@
             </div>
           </div>
           <h3 class="mt-3">Total Hours Required</h3>
-          <input type="text" class="form-control mx-auto total-hours-input" style="width: 100px"  />
+          <input type="text" class="form-control mx-auto total-hours-input" style="width: 100px"  id="totalHoursInput" />
         </div>
         <div class="modal-footer d-flex justify-content-center" style="border: none">
           <button type="submit" class="btn" style="background-image: linear-gradient(to right, #4776e6, #8e54e9); color: #fff;" name="action" value="request">Request</button>
@@ -118,25 +118,38 @@
       // Update the value of the total hours input
       updateTotalHours();
   });
- function updateTotalHours() {
-        // Get the value of the hours field
-        const hoursValue = parseFloat(hoursField.value) || 0;
+  function updateTotalHours() {
+    // Get all the hours input fields
+    const allHoursInputs = document.querySelectorAll('input[name^="hours"]');
+    
+    // Calculate the total hours
+    const totalHours = Array.from(allHoursInputs)
+        .map(input => parseFloat(input.value) || 0)
+        .reduce((total, hours) => total + hours, 0);
+    
+    // Update the value of the total hours input
+    totalHoursInput.value = totalHours.toFixed(2); // Displaying with two decimal places, adjust as needed
+}
 
-        // Update the value of the total hours input
-        totalHoursInput.value = hoursValue.toFixed(2); // Displaying with two decimal places, adjust as needed
+// Add event listener for each hours input field
+document.querySelectorAll('input[name^="hours"]').forEach(input => {
+    input.addEventListener("input", updateTotalHours);
+});
+
+// Event listener for the "New" button
+newRowButton.addEventListener("click", function () {
+    createRowWithData();
+    updateTotalHours(); // Update total hours when a new row is added
+});
+
+// Event listener for remove button in each row
+dynamicRowsContainer.addEventListener("click", function (event) {
+    const target = event.target;
+    if (target.classList.contains("remove-btn")) {
+        dynamicRowsContainer.removeChild(target.closest(".template-row"));
+        updateTotalHours(); // Update total hours when a row is removed
     }
-    // Function to calculate and update the total user time
-    function calculateTotalUserTime() {
-        const userTimeInputs = document.querySelectorAll('input[name^="hours_"]');
-        let totalUserTime = 0;
-
-        userTimeInputs.forEach((input) => {
-            const hours = parseFloat(input.value) || 0; // Parse hours as a float, default to 0 if not a valid number
-            totalUserTime += hours;
-        });
-
-        totalHoursInput.value = totalUserTime;
-    }
+});
 
     // Function to create a new row with data from user selection and hours
     function createRowWithData() {
@@ -152,7 +165,7 @@
 
         // Get the entered hours
         const hours = hoursField.value;
-        console.log("H:",hours)
+  
 
         // Add the selected user to the set of selected users
         selectedUserIds.add(userId);
@@ -186,7 +199,7 @@
         const removeRowButton = newRow.querySelector(".remove-btn");
         removeRowButton.addEventListener("click", function () {
             dynamicRowsContainer.removeChild(newRow);
-            calculateTotalUserTime(); // Recalculate total user time when a row is removed
+
 
             // Remove the user from the set of selected users and re-add to the dropdown options
             selectedUserIds.delete(userId);
@@ -197,12 +210,10 @@
         selectedUserField.value = "";
         hoursField.value = "";
 
-        // Calculate total user time when a new row is added
-        calculateTotalUserTime();
+
     }
 
-    // Event listener for the "New" button
-    newRowButton.addEventListener("click", createRowWithData);
+ 
 
     // Function to handle form submission
     function handleFormSubmit() {

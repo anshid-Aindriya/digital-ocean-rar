@@ -108,6 +108,36 @@ div[role="roundprogressbar"] {
     margin-top: 10px;
     border:none;
   }
+  @media screen and (min-width: 1300px) {
+    .inner-card {
+      width: 238px;
+    }
+  }
+
+  @media screen and (min-width: 1500px) {
+    .inner-card {
+      width: 274px;
+    }
+  }
+
+  @media screen and (min-width: 1700px) {
+    .inner-card {
+      width: 294px;
+    }
+  }
+
+  @media screen and (min-width: 1900px) {
+    .inner-card {
+      width: 328px;
+    }
+  }
+
+  @media screen and (min-width: 2100px) {
+    .inner-card {
+      width: 443px;
+      height: 55px;
+    }
+  }
 
   .ellipse-9 {
     border-radius: 50%;

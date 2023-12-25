@@ -1273,9 +1273,9 @@ def convert_time_to_minutes(time_str):
  
     if len(parts)  > 0:
         if "h" in parts[0]:
-            hours  = int(parts[0].rstrip("h"))
+            hours   = int(parts[0].rstrip("h"))
         else:
-            hours  = int(parts[0])
+            hours   = int(parts[0])
 
     if len(parts)  > 1:
         if "m" in parts[1]:
@@ -1290,94 +1290,97 @@ def convert_time_to_minutes(time_str):
 
 def mainLayouts(request, project_id):
     if "adminId" in request.session or "managerId" in request.session:
-        project_data = project_db.objects.get(id=project_id)
-        time_sheet_data = timesheet_db.objects.filter(project=project_data)
+        project_data       = project_db.objects.get(id=project_id)
+        time_sheet_data    = timesheet_db.objects.filter(project=project_data)
 
-        user_worked_time = {}
-        worked_time_hours = 0
-        user_time_hours = 0
+        user_worked_time   = {}
+        worked_time_hours  = 0
+        user_time_hours    = 0
 
         for entry in time_sheet_data:
-            user = entry.user.id
-            worked_time_str = entry.worked_time
-            worked_time_minutes = convert_time_to_minutes(worked_time_str)
-            worked_time_hours = worked_time_minutes / 60
+            user                 = entry.user.id
+            worked_time_str      = entry.worked_time
+            worked_time_minutes  = convert_time_to_minutes(worked_time_str)
+            worked_time_hours    = worked_time_minutes / 60
 
             user_worked_time.setdefault(user, 0)
-            user_worked_time[user] += worked_time_hours
+            user_worked_time[user]  += worked_time_hours
 
-        allotment_entries = allotment_db.objects.filter(project=project_data)
-        user_time_dict = defaultdict(int)
+        allotment_entries        = allotment_db.objects.filter(project=project_data)
+        user_time_dict           = defaultdict(int)
 
         if allotment_entries.exists():
-            approved_allotments = allotment_entries.filter(status="APPROVED")
+            approved_allotments   = allotment_entries.filter(status="APPROVED")
 
             for approved_allotment in approved_allotments:
-                allotment_users = allotment_user_db.objects.filter(
+                allotment_users   = allotment_user_db.objects.filter(
                     allotment=approved_allotment
                 )
 
                 for allotment_user in allotment_users:
-                    user = allotment_user.user.id
-                    user_time_str = allotment_user.user_alloted
-                    user_time_minutes = convert_time_to_minutes(user_time_str)
+                    user               = allotment_user.user.id
+                    user_time_str      = allotment_user.user_alloted
+                    user_time_minutes  = convert_time_to_minutes(user_time_str)
 
-                    user_time_hours = user_time_minutes / 60
+                    user_time_hours    = user_time_minutes / 60
 
                     user_time_dict[user] += user_time_hours
 
-            total_allotted_time = sum(user_time_dict.values())
+            total_allotted_time   = sum(user_time_dict.values())
 
-            total_worked_time = sum(user_worked_time.values())
-            consumed_time = total_worked_time
-            total_remaining_time = total_allotted_time - consumed_time
+            total_worked_time     = sum(user_worked_time.values())
+            consumed_time         = total_worked_time
+            total_remaining_time  = total_allotted_time - consumed_time
 
             if total_allotted_time > 0:
                 completion_status_percentage = (
                     total_worked_time / total_allotted_time
                 ) * 100
             else:
-                completion_status_percentage = 0
+                completion_status_percentage  = 0
 
-            total_allotted_time_percentage = 100
-            project_data.progress = round(completion_status_percentage, 2)
-            project_data.is_favorite = False
+            total_allotted_time_percentage    = 100
+            project_data.progress             = round(completion_status_percentage, 2)
+            project_data.is_favorite          = False
             project_data.save()
 
             user_time_list = [
                 {
-                    "user_id": user,
-                    "profile_image": user_db.objects.get(id=user).profile_image,
-                    "position": user_db.objects.get(id=user).position,
-                    "user_name": user_db.objects.get(id=user).name[:12],
-                    "difference_hours": round(
+                    "user_id"             : user,
+                    "profile_image"       : user_db.objects.get(id=user).profile_image,
+                    "position"            : user_db.objects.get(id=user).position,
+                    "user_name"           : user_db.objects.get(id=user).name[:12],
+                    "difference_hours"    : round (
                         (user_time_dict[user] - user_worked_time.get(user, 0)), 2
-                    ),
+                                                  ),
                 }
                 for user in user_time_dict
             ]
-            user_time_list = user_time_list[:6]
+            user_time_list       = user_time_list[:6]
 
-            user_time_dict_list = [
+            user_time_dict_list  = [
                 {
-                    "id": user,
-                    "user_name": user_db.objects.get(id=user).name,
-                    "total_allotted_hours": round(user_time_dict[user], 2),
+                    "id"                    : user,
+                    "user_name"             : user_db.objects.get(id=user).name,
+                    "total_allotted_hours"  : round(user_time_dict[user], 2),
                 }
                 for user in user_time_dict
-            ]
+
+                                    ]
 
             labels = [
+
                 f"{user_info['user_name']} ({round(user_worked_time.get(user_info['id'], 0), 2)} / {round(user_time_dict[user_info['id']], 2)})"
                 for user_info in user_time_dict_list
-            ]
+
+                     ]
 
             data = {
-                "labels": labels,
-                "datasets": [
+                "labels"    : labels,
+                "datasets"  : [
                     {
-                        "label": "Time Worked Percentage",
-                        "data": [
+                        "label"  : "Time Worked Percentage",
+                        "data"   : [
                             round(
                                 (
                                     user_worked_time.get(user_info["id"], 0)
@@ -1390,29 +1393,31 @@ def mainLayouts(request, project_id):
                             else 0
                             for user_info in user_time_dict_list
                         ],
-                        "backgroundColor": "rgb(248 87 110)",
-                        "borderColor": "rgb(248 87 110)",
-                        "borderWidth": 1,
+                        "backgroundColor" : "rgb(248 87 110)",
+                        "borderColor"     : "rgb(248 87 110)",
+                        "borderWidth"     : 1,
                     }
                 ],
             }
 
             context = {
-                "project_data": project_data,
-                "navbar": "dashboard",
-                "worked_time_hours": worked_time_hours,
-                "user_time_hours": user_time_hours,
-                "user_time_list": user_time_list,
-                "total_allotted_time": total_allotted_time,
-                "total_allotted_time_percentage":total_allotted_time_percentage,
-                "total_worked_time": round(total_worked_time, 2),
-                "consumed_time": round(consumed_time, 2),
-                "total_remaining_time": round(total_remaining_time, 2),
-                "completion_status_percentage": round(completion_status_percentage, 2),
-                "completion_status_percentage_rounded": round(completion_status_percentage),
-                "user_time_dict": user_time_dict_list,
-                "chart_data": data,
-            }
+
+                          "project_data"                          : project_data,
+                          "navbar"                                : "dashboard",
+                          "worked_time_hours"                     : worked_time_hours,
+                          "user_time_hours"                       : user_time_hours,
+                          "user_time_list"                        : user_time_list,
+                          "total_allotted_time"                   : total_allotted_time,
+                          "total_allotted_time_percentage"        : total_allotted_time_percentage,
+                          "total_worked_time"                     : round(total_worked_time, 2),
+                          "consumed_time"                         : round(consumed_time, 2),
+                          "total_remaining_time"                  : round(total_remaining_time, 2),
+                          "completion_status_percentage"          : round(completion_status_percentage, 2),
+                          "completion_status_percentage_rounded"  : round(completion_status_percentage),
+                          "user_time_dict"                        : user_time_dict_list,
+                          "chart_data"                            : data,
+                
+                      }
 
         else:
             messages.error(
@@ -1420,8 +1425,8 @@ def mainLayouts(request, project_id):
             )
 
             context = {
-                "project_data": project_data,
-                "navbar": "dashboard",
+                "project_data"  : project_data,
+                "navbar"        : "dashboard",
             }
 
         return render(request, "project-dashboard.html", context)

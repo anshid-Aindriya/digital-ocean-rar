@@ -130,7 +130,7 @@ line-height: 17px;
 letter-spacing: 0px;
 text-align: left;
 color: #4776E6;
-background-color: #FFFFFF;
+background-color: #f9f9f9;
 border: none;
   }
 
@@ -292,22 +292,114 @@ text-align: left;
 /* CSS to position individual table headers */
 .custome-table th:nth-child(1) {
   position: relative;
-  left: 29px;
+  left: 34px;
 }
 
 .custome-table th:nth-child(2) {
   position: relative;
-  left: 53px;
+  left: -57px;
 }
 
 .custome-table th:nth-child(3) {
   position: relative;
-  left: 164px;
+  left: 24px;
 }
 
 /* Add more styles for other headers as needed */
 .custome-table th:nth-child(4) {
   position: relative;
-  right: 155px;
+  right: 214px;
 }
 
+@media (min-width: 1300px) {
+
+
+  .custome-table th:nth-child(2) {
+    left: -68px;
+  }
+
+  .custome-table th:nth-child(4) {
+      right: 243px; 
+  }
+
+ 
+}
+@media (min-width: 1500px) {
+
+  .custome-table th:nth-child(1) {
+    left: 32px;
+  }
+  
+  .custome-table th:nth-child(2) {
+    left: -75px;
+  }
+
+  .custome-table th:nth-child(4) {
+      right: 277px; 
+  }
+
+ 
+}
+
+@media (min-width: 1700px) {
+
+  .custome-table th:nth-child(1) {
+    left: 29px;
+  }
+  
+  .custome-table th:nth-child(2) {
+    left: -84px;
+  }
+
+  .custome-table th:nth-child(4) {
+      right: 305px; 
+  }
+
+ 
+}
+
+@media (min-width: 1900px) {
+
+
+  .custome-table th:nth-child(2) {
+    left: -95px;
+  }
+
+  .custome-table th:nth-child(4) {
+      right: 344px; 
+  }
+
+ 
+}
+
+@media (min-width: 2100px) {
+
+
+  .custome-table th:nth-child(2) {
+    left: -145px;
+  }
+
+  .custome-table th:nth-child(4) {
+      right: 480px; 
+  }
+
+ 
+}
+
+@media (min-width: 3000px) {
+
+
+  .custome-table th:nth-child(2) {
+    left: -238px;
+  }
+
+  .custome-table th:nth-child(3) {
+    left: 47px;
+  }
+
+  .custome-table th:nth-child(4) {
+      right: 735px; 
+  }
+
+ 
+}

@@ -72,6 +72,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rar.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'rar_db',
+#         'USER': 'root',
+#         'PASSWORD':'',
+#         'HOST':'localhost',
+#         'PORT':'3306'
+#     }
+# }
 
    
 DATABASES = {
