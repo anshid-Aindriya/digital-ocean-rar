@@ -152,66 +152,68 @@ dynamicRowsContainer.addEventListener("click", function (event) {
 });
 
     // Function to create a new row with data from user selection and hours
-    function createRowWithData() {
-        rowCounter++;
+ // Function to create a new row with data from user selection and hours
+function createRowWithData() {
+  rowCounter++;
 
-        const selectedUserField = document.querySelector(`select[name="selected_user[]"]`);
-        const hoursField = document.querySelector(`input[name="hours[]"]`);
-        console.log("hou:",hoursField)
+  const selectedUserField = document.querySelector(`select[name="selected_user[]"]`);
+  const hoursInputField = document.querySelector(`input[name="hours[]"]`);
+  console.log("hou:", hoursInputField);
 
-        // Get the selected user ID and name
-        const userId = selectedUserField.value;
-        const userName = selectedUserField.options[selectedUserField.selectedIndex].text;
+  // Get the selected user ID and name
+  const userId = selectedUserField.value;
+  const userName = selectedUserField.options[selectedUserField.selectedIndex].text;
 
-        // Get the entered hours
-        const hours = hoursField.value;
-  
+  // Get the entered hours
+  const hours = hoursInputField.value;
 
-        // Add the selected user to the set of selected users
-        selectedUserIds.add(userId);
+  // Add the selected user to the set of selected users
+  selectedUserIds.add(userId);
 
-        // Remove the selected user from the dropdown options
-        selectedUserField.remove(selectedUserField.selectedIndex);
+  // Remove the selected user from the dropdown options
+  selectedUserField.remove(selectedUserField.selectedIndex);
 
-        const newRow = document.createElement("div");
-        newRow.className = "row template-row";
-        newRow.innerHTML = `
-            <div class="col mt-2">
-                <label for="addHours" class="selected-user">Select User</label>
-                <select class="form-select" aria-label="Default select example" name="selected_user_${rowCounter}">
-                    <option value="${userId}" selected>${userName}</option>
-                </select>
-            </div>
-            <div class="col mt-2">
-                <label for="addHours" class="mx-3">Add Hours:</label>
-                <div class="col-sm-10">
-                    <input type="number" class="form-control" name="hours_${rowCounter}" value="${hours}">
-                </div>
-            </div>
-            <div class="col mt-4">
-                <button type="button" class="remove-btn">Remove</button>
-            </div>
-        `;
+  const newRow = document.createElement("div");
+  newRow.className = "row template-row";
+  newRow.innerHTML = `
+      <div class="col mt-2">
+          <label for="addHours" class="selected-user">Select User</label>
+          <select class="form-select" aria-label="Default select example" name="selected_user_${rowCounter}">
+              <option value="${userId}" selected>${userName}</option>
+          </select>
+      </div>
+      <div class="col mt-2">
+          <label for="addHours" class="mx-3">Add Hours:</label>
+          <div class="col-sm-10">
+              <input type="number" class="form-control" name="hours_${rowCounter}" value="${hours}">
+          </div>
+      </div>
+      <div class="col mt-4">
+          <button type="button" class="remove-btn">Remove</button>
+      </div>
+  `;
 
-        dynamicRowsContainer.appendChild(newRow);
+  dynamicRowsContainer.appendChild(newRow);
 
-        // Add event listener for the remove button
-        const removeRowButton = newRow.querySelector(".remove-btn");
-        removeRowButton.addEventListener("click", function () {
-            dynamicRowsContainer.removeChild(newRow);
+  // Add event listener for the remove button
+  const removeRowButton = newRow.querySelector(".remove-btn");
+  removeRowButton.addEventListener("click", function () {
+      dynamicRowsContainer.removeChild(newRow);
+
+      // Remove the user from the set of selected users and re-add to the dropdown options
+      selectedUserIds.delete(userId);
+      selectedUserField.appendChild(new Option(userName, userId));
+
+      // Update the total hours when a row is removed
+      updateTotalHours();
+  });
+
+  // Clear the user selection and hours fields after adding a row
+  selectedUserField.value = "";
+  hoursInputField.value = "";
+}
 
 
-            // Remove the user from the set of selected users and re-add to the dropdown options
-            selectedUserIds.delete(userId);
-            selectedUserField.appendChild(new Option(userName, userId));
-        });
-
-        // Clear the user selection and hours fields after adding a row
-        selectedUserField.value = "";
-        hoursField.value = "";
-
-
-    }
 
  
 

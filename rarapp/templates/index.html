@@ -97,7 +97,7 @@
                           </div>
                                              
                             <a href="{% url 'main' project_id=project.id %}" style="text-decoration: none;">
-                                <div class="BidWinner">{{ project.title }}</div>
+                              <div class="BidWinner">{{ project.title|truncatechars:19 }}</div>
                             </a>
                             <hr>
                             <div class="button-container">

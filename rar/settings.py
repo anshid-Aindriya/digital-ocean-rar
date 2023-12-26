@@ -72,28 +72,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rar.wsgi.application'
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'rar_db',
-#         'USER': 'root',
-#         'PASSWORD':'',
-#         'HOST':'localhost',
-#         'PORT':'3306'
-#     }
-# }
-
-   
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'newdb',
-        'USER': 'newuser',
-        'PASSWORD':'newpassword',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'rar_db',
+        'USER': 'root',
+        'PASSWORD':'',
         'HOST':'localhost',
-        'PORT':''
+        'PORT':'3306'
     }
-  }
+}
+
+   
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'newdb',
+#         'USER': 'newuser',
+#         'PASSWORD':'newpassword',
+#         'HOST':'localhost',
+#         'PORT':''
+#     }
+#   }
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
