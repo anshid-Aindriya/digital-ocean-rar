@@ -607,21 +607,21 @@ def addTimesheet(request):
 
             total_minutes_worked  = hours * 60 + minutes
 
-            if total_minutes_worked > 1440:
-                messages.error (
+            # if total_minutes_worked > 1440:
+            #     messages.error (
 
-                    request, "Worked time should not exceed 24 hours (1440 minutes)."
+            #         request, "Worked time should not exceed 24 hours (1440 minutes)."
 
-                               )
-                return JsonResponse (
+            #                    )
+            #     return JsonResponse (
 
-                           {
+            #                {
                                
-                            "status": "error"
+            #                 "status": "error"
 
-                            }
+            #                 }
 
-                                    )
+            #                         )
 
             timesheet_data = timesheet_db(
                 user_id      = user_id,
@@ -805,21 +805,21 @@ def editTimesheet(request, timesheet_id):
                
                 total_minutes_worked  = hours * 60 + minutes
 
-                if total_minutes_worked > 1440:
-                    messages.error
-                    (
+                # if total_minutes_worked > 1440:
+                #     messages.error
+                #     (
 
-                        request,
-                        "Worked time should not exceed 24 hours (1440 minutes)."
+                #         request,
+                #         "Worked time should not exceed 24 hours (1440 minutes)."
 
-                    )
-                    return JsonResponse (
+                #     )
+                #     return JsonResponse (
 
-                        {
-                            "status": "error"
-                        }
+                #         {
+                #             "status": "error"
+                #         }
 
-                                        )
+                #                         )
 
                 timesheet_entry              = timesheet_db.objects.get(id=timesheet_id)
                 timesheet_entry.worked_time  = worked_time
@@ -998,10 +998,11 @@ def Allotment(request, project_id):
 @csrf_exempt
 def update_allotment(request):
     if request.method  == "POST":
-        data           = json.loads(request.body)
-        allotment_id   = data.get("allotment_id")
-        new_status     = data.get("new_status")
-        user_data      = data.get("user_data")
+        data               = json.loads(request.body)
+        allotment_id       = data.get("allotment_id")
+        new_status         = data.get("new_status")
+        user_data          = data.get("user_data")
+        selected_user_id   = data.get("selected_user_id")
 
         try:
 
@@ -1015,6 +1016,9 @@ def update_allotment(request):
                     user_id        = user_id, 
                     allotment_id   = allotment_id
                                                     )
+                # if selected_user_id(
+
+                # )
 
                 if (
                     field == "user_time"
@@ -1055,6 +1059,8 @@ def update_allotment(request):
     return JsonResponse(response_data, status=405)
 
 
+
+
 def delete_allotment(request, allotment_id):
     try:
         allotment  = allotment_db.objects.get(id=allotment_id)
@@ -1077,6 +1083,28 @@ def delete_allotment(request, allotment_id):
             }  
                             )
 
+
+
+def delete_allotment_user(request, allotment_id, user_id):
+    try:
+        # Ensure that the request method is POST
+        if request.method == "POST":
+            # Find the allotment_user_db instance to delete
+            allotment_user = allotment_user_db.objects.get(allotment_id=allotment_id, user_id=user_id)
+
+            # Perform the deletion
+            allotment_user.delete()
+
+            # Return success response
+            return JsonResponse({"success": True})
+
+    except allotment_user_db.DoesNotExist:
+        # Return error response if the allotment_user is not found
+        return JsonResponse({"success": False, "error": "Allotment user not found"}, status=404)
+
+    except Exception as e:
+        # Return error response for other exceptions
+        return JsonResponse({"success": False, "error": str(e)}, status=400)
 
 def milestones(request, project_id):
     if "adminId" in request.session or "managerId" in request.session:

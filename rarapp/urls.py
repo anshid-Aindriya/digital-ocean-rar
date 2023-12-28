@@ -39,6 +39,7 @@ urlpatterns = [
     path('allotment/<int:project_id>/',views.Allotment,name='allotment'),
     path('update-allotment/', views.update_allotment, name='update-allotment'),
     path('delete-allotment/<int:allotment_id>/', views.delete_allotment, name='delete_allotment'),
+    path('delete-allotment-user/<int:allotment_id>/<int:user_id>/',views.delete_allotment_user, name='delete_allotment_user'),
     
     path('milestone/<int:project_id>/',views.milestones,name='milestone'),
     path('fetch_milestone_data/', views.fetch_milestone_data, name='fetch_milestone_data'),
