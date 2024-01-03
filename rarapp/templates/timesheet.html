@@ -38,9 +38,23 @@
                             <span class="filter-btn-text">Filter</span>
                         </button>
                         <span class="filter mx-2">Filter Applied</span>
-                        <span class="badge text-dark filter-text mx-2" id="projectFilter">{{ filter_details.selected_project_title }}</span>
-                        <span class="badge text-dark filter-text mx-2" id="startDateFilter">{{ filter_details.selected_start_date }}</span>
-                        <span class="badge text-dark filter-text mx-2" id="endDateFilter">{{ filter_details.selected_end_date }}</span>
+                        <span class="badge text-dark filter-text mx-2" id="userFilter">{{ filter_details.selected_user|truncatechars:10 }}</span>
+                        <span class="badge text-dark filter-text mx-2" id="projectFilter">{{ filter_details.selected_project_title|truncatechars:10 }}</span>
+                        <span class="badge text-dark filter-text mx-2" id="startDateFilter">
+                          {% if filter_details.selected_start_date %}
+                              {{ filter_details.selected_start_date|date:"M. d, Y"|truncatechars:10 }}
+                          {% else %}
+                              None
+                          {% endif %}
+                      </span>
+                      <span class="badge text-dark filter-text mx-2" id="endDateFilter">
+                          {% if filter_details.selected_end_date %}
+                              {{ filter_details.selected_end_date|date:"M. d, Y"|truncatechars:10 }}
+                          {% else %}
+                              None
+                          {% endif %}
+                      </span>
+                      
                         <button class="badge filter-clear mx-2" id="clearFilter">Clear Filter</button>
                     </div>
                 </div>
@@ -57,72 +71,135 @@
     
       <section class="section dashboard">
         <div class="table-responsive">
-        <div class="col-sm-12 mt-3">
-          <table class="custome-table">
-            <thead>
-              <tr>
-                <th scope="col" class="proj-style">Project</th>
-                <th scope="col" class="user-style">User</th>
-                <th scope="col" class="time-style">Worked Time</th>
-                <th scope="col" class="date-style">Date</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-          <div class="card mt-2">
-            <div class="card-body">
-              <table class="table">
-               
-                <tbody class="overmt-5" id="timesheetBody">
-                  {% for timesheet_entry in timesheet_data %}
-                  <tr data-timesheet-row="{{ timesheet_entry.id }}" data-project="{{ timesheet_entry.project.title }}" data-start-date="{{ timesheet_entry.date|date:'Y-m-d' }}"data-user="{{ timesheet_entry.user.name }}"data-worked-time="{{ timesheet_entry.worked_time }}">
-                    <!-- Table data columns go here -->
-                    <td>
-                      <div class="prof-img rounded-circle">
-                        <span class="initials">{{ timesheet_entry.project.title|slice:":2" }}</span>
-                      </div>
-                      {{ timesheet_entry.project.title }}
-                    </td>
-                    <td>
-                      {% if timesheet_entry.user.profile_image %}
-                      <img src="{{ timesheet_entry.user.profile_image.url }}" alt="{{ timesheet_entry.user.name }}" class="prof-img rounded-circle">
-                      {% else %}
-                      <div class="prof-img rounded-circle">
-                        <span class="initials">{{ timesheet_entry.user.name|slice:":2" }}</span>
-                      </div>
-                      {% endif %}
-                      {{ timesheet_entry.user.name }}
-                    </td>
-                    <td>{{ timesheet_entry.worked_time }}</td>
-                    <td>{{ timesheet_entry.date }}</td>
-                    <td>
-                      <div class=" dropdown">
-                        <a href="#" class="" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
-                          <i class="bi bi-three-dots-vertical"></i>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                          <!-- Pass the timesheet entry ID as a data attribute -->
-                          <li>
-                            <a class="dropdown-item edit-timesheet-button" href="#" data-timesheet-id="{{ timesheet_entry.id }}">Edit</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item delete-button" href="#" data-bs-toggle="modal" data-bs-target="#verticalycentered" data-timesheet-id="{{ timesheet_entry.id }}">Delete</a>
-                        </li>
-                                            
-                          
-                          <!-- Add more items as needed -->
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-                
-              </table>
+            <div class="col-sm-12 mt-3">
+                <table class="custome-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="proj-style">Project</th>
+                            <th scope="col" class="user-style">User</th>
+                            <th scope="col" class="time-style">Worked Time</th>
+                            <th scope="col" class="date-style">Date</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
-          </div>
+            <div class="card mt-2">
+                <div class="card-body">
+                    <table class="table">
+                        <tbody class="overmt-5" id="timesheetBody">
+                            {% for timesheet_entry in timesheet_data %}
+                            <tr data-timesheet-row="{{ timesheet_entry.id }}" data-project="{{ timesheet_entry.project.title }}" data-start-date="{{ timesheet_entry.date|date:'Y-m-d' }}" data-user="{{ timesheet_entry.user.name }}" data-worked-time="{{ timesheet_entry.worked_time }}">
+                                <!-- Table data columns go here -->
+                                <td>
+                                    <div class="prof-img rounded-circle">
+                                        <span class="initials">{{ timesheet_entry.project.title|slice:":2" }}</span>
+                                    </div>
+                                    {{ timesheet_entry.project.title|truncatechars:25 }}
+                                </td>
+                                <td>
+                                    {% if timesheet_entry.user.profile_image %}
+                                    <img src="{{ timesheet_entry.user.profile_image.url }}" alt="{{ timesheet_entry.user.name }}" class="prof-img rounded-circle">
+                                    {% else %}
+                                    <div class="prof-img rounded-circle">
+                                        <span class="initials">{{ timesheet_entry.user.name|slice:":2" }}</span>
+                                    </div>
+                                    {% endif %}
+                                    {{ timesheet_entry.user.name|truncatechars:12 }}
+                                </td>
+                                <td>{{ timesheet_entry.worked_time }}</td>
+                                <td>{{ timesheet_entry.date }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a href="#" class="" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <!-- Pass the timesheet entry ID as a data attribute -->
+                                            <li>
+                                                <a class="dropdown-item edit-timesheet-button" href="#" data-timesheet-id="{{ timesheet_entry.id }}">Edit</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item delete-button" href="#" data-bs-toggle="modal" data-bs-target="#verticalycentered" data-timesheet-id="{{ timesheet_entry.id }}">Delete</a>
+                                            </li>
+                                            <!-- Add more items as needed -->
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    
+      <!-- Pagination Controls -->
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <!-- Previous Page Links -->
+        {% if timesheet_data.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?{{ request.GET.urlencode }}&page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ timesheet_data.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&laquo;&laquo;</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+            </li>
+        {% endif %}
+
+        <!-- Page Numbers Links -->
+        {% for page in timesheet_data.paginator.page_range %}
+            {% if timesheet_data.number == page %}
+                <li class="page-item active">
+                    <span class="page-link">
+                        {{ page }}
+                        <span class="sr-only"></span>
+                    </span>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ page }}">{{ page }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Next Page Links -->
+        {% if timesheet_data.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ timesheet_data.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ timesheet_data.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">&raquo;&raquo;</span>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+<!-- End Pagination Controls -->
+
+
         </div>
-      </section>
+    </section>
+    
 
   <!-- modal -->
 
@@ -143,7 +220,16 @@
             {% csrf_token %}
             <div class="form-group">
               <div class="row">
-                  <div class="col custcol-1">
+                <div class="col custcol-1">
+                  <label for="userSelect">Select User</label>
+                  <select class="form-control custom-input" id="userSelect" name="user">
+                      <option value="">All</option>
+                      {% for user in unique_users %}
+                          <option value="{{ user.id }}">{{ user.name }}</option>
+                      {% endfor %}
+                  </select>
+              </div>
+                  <div class="col custcol-2">
                       <label for="projectSelect">Select Project</label>
                       <select class="form-control custom-input" id="projectSelect" name="project">
                         <option value="">All</option>
@@ -152,22 +238,18 @@
                       {% endfor %}
                       </select>
                   </div>
-    
-          <div class="col custcol-2 ">
-              <label for="startDate">Start Date</label>
-              <input type="date" class="form-control custom-input" id="startDate" name="start_date">
-          </div>
-  </div>
+                </div>
     
 
-  <div class="row mt-3">
-    
-  <div class="col custcol-3">
-    
-        <label for="endDate">Selected End Date</label>
-        <input type="date" class="form-control custom-input" id="endDate" name="end_date">
-    
-  </div>
+                <div class="row mt-3">
+                  <div class="col custcol-3 ">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" class="form-control custom-input" id="startDate" name="start_date">
+                </div>
+                <div class="col custcol-4">
+                      <label for="endDate">Selected End Date</label>
+                      <input type="date" class="form-control custom-input" id="endDate" name="end_date">
+                </div>
 
 
 
@@ -189,7 +271,7 @@
     </div>
   </div>
 
-  
+  <!-- delete timesheet -->
 
   <div class="modal fade" id="verticalycentered" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -372,7 +454,7 @@
       <select class="form-select project-dropdown">
           <option value="">Select a project</option>
           {% for project in project_data %}
-          <option value="{{ project.id }}">{{ project.title }}</option>
+          <option value="{{ project.id }}">{{ project.title|truncatechars:25 }}</option>
           {% endfor %}
       </select>
   </td>

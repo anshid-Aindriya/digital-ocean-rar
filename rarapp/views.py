@@ -13,6 +13,8 @@ from datetime import timedelta
 from django.urls import reverse
 from collections import defaultdict
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 def register(request):
     if request.method == "POST":
@@ -668,37 +670,60 @@ def get_project_title(project_id):
     except project_db.DoesNotExist:
         return "Unknown Project"
 
+def get_user_name(user_id):
+    if user_id is None or user_id == "":
+        return "All Users"
+    
+    try:
+        user = user_db.objects.get(id=user_id)
+        return f"{user.name}" 
+    except user_db.DoesNotExist:
+        return "Unknown User"
+
+
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def timesheet_view(request):
     if "adminId" in request.session or "managerId" in request.session:
+        selected_user_id         = request.GET.get("user", None)
         selected_project_id      = request.GET.get("project", None)
         selected_start_date      = request.GET.get("start_date", None)
         selected_end_date        = request.GET.get("end_date", None)
 
-        timesheet_data           = timesheet_db.objects.all().order_by("-created_at")
+        unique_user_ids          = set()
+
+        timesheet_data           = timesheet_db.objects.all().order_by("-date")
+
         project_data             = project_db.objects.all()
         user_data                = user_db.objects.all()
 
-        if (
-            
-            selected_project_id and selected_project_id != "All"
+        items_per_page           = 10
+        
 
-           ):
-              
+        for project in project_data:
+            for user in project.users.all():
+                unique_user_ids.add(user.id)
+
+        unique_users = user_db.objects.filter(id__in=unique_user_ids)
+
+        # Filter timesheet data based on selected user and project
+        if selected_project_id and selected_project_id != "All":
             timesheet_data = timesheet_data.filter(project__id=selected_project_id)
 
+            # If a user is selected, further filter by user
+            if selected_user_id and selected_user_id != "All":
+                timesheet_data = timesheet_data.filter(user__id=selected_user_id)
+
+        elif selected_user_id and selected_user_id != "All":
+            timesheet_data = timesheet_data.filter(user__id=selected_user_id)
+
         if selected_start_date:
-
-            selected_start_date  = datetime.strptime (
-
-                selected_start_date, "%Y-%m-%d"
-                                                     ).date()
-            timesheet_data       = timesheet_data.filter(date__gte=selected_start_date)
+            selected_start_date = datetime.strptime(selected_start_date, "%Y-%m-%d").date()
+            timesheet_data = timesheet_data.filter(date__gte=selected_start_date)
 
         if selected_end_date:
-            selected_end_date    = datetime.strptime(selected_end_date, "%Y-%m-%d").date()
-            timesheet_data       = timesheet_data.filter(date__lte=selected_end_date)
+            selected_end_date = datetime.strptime(selected_end_date, "%Y-%m-%d").date()
+            timesheet_data = timesheet_data.filter(date__lte=selected_end_date)
 
         total_worked_time        = timedelta()
 
@@ -720,6 +745,7 @@ def timesheet_view(request):
         filter_details = {
 
                              "selected_project_title"  : get_project_title(selected_project_id),
+                             "selected_user"           : get_user_name(selected_user_id),
                              "selected_start_date"     : selected_start_date,
                              "selected_end_date"       : selected_end_date
 
@@ -727,11 +753,26 @@ def timesheet_view(request):
 
         total_worked_time_str = f"{total_worked_hours}h:{total_worked_minutes}m"
 
+        # pagination
+        paginator = Paginator(timesheet_data, items_per_page)
+        page_number = request.GET.get('page', 1)
+        
+        try:
+            # Get the Page object for the current page
+            timesheet_page = paginator.page(page_number)
+        except PageNotAnInteger:
+            # If the page parameter is not an integer, set it to the first page
+            timesheet_page = paginator.page(1)
+        except EmptyPage:
+            # If the page parameter is out of range, deliver the last page
+            timesheet_page = paginator.page(paginator.num_pages)
+
         context = {
 
-            "timesheet_data"     : timesheet_data,
+            "timesheet_data"     : timesheet_page,
             "project_data"       : project_data,
             "user_data"          : user_data,
+            "unique_users"       : unique_users,
             "filter_details"     : filter_details,
             "total_worked_time"  : total_worked_time_str
         }
@@ -739,6 +780,8 @@ def timesheet_view(request):
         return render(request, "timesheet.html", context)
     else:
         return render(request, "login.html")
+
+
 
 
 def get_users_for_project(request, project_id):
@@ -872,20 +915,20 @@ def Allotment(request, project_id):
                                      )
             allotment.save()
 
-            selected_users  = []
-            hours           = []
+            selected_users = []
+            hours = []
 
             for key, value in request.POST.items():
-
                 if key.startswith("selected_user_"):
-                    user_id     = value
-
-                    selected_users.append(user_id)
+                    try:
+                        user_id = int(value)
+                        selected_users.append(user_id)
+                    except ValueError:
+                        print(f"Illegal value for user_id: {value}")
 
                 elif key.startswith("hours_"):
-                    user_hours   = value
+                    user_hours = value
                     hours.append(user_hours)
-
             for user_id, user_hour in zip(selected_users, hours):
                 if user_id and user_hour:
                     user                     = user_db.objects.get(id=user_id)
@@ -932,12 +975,12 @@ def Allotment(request, project_id):
         for allotment_user_instance in allotment_users:
             related_allotment  = allotment_user_instance.allotment
 
-            if related_allotment is not None:
-                status_value   = related_allotment.status
+            # if related_allotment is not None:
+            #     status_value   = related_allotment.status
 
-                print("Status Value for Allotment User:", status_value)
-            else:
-                print("Related Allotment is None for Allotment User")
+            #     print("Status Value for Allotment User:", status_value)
+            # else:
+            #     print("Related Allotment is None for Allotment User")
 
         total_hours      = 0
 
@@ -993,53 +1036,52 @@ def Allotment(request, project_id):
 
 
 
-
-
 @csrf_exempt
 def update_allotment(request):
-    if request.method  == "POST":
-        data               = json.loads(request.body)
-        allotment_id       = data.get("allotment_id")
-        new_status         = data.get("new_status")
-        user_data          = data.get("user_data")
-        selected_user_id   = data.get("selected_user_id")
+    if request.method == "POST":
+        data = json.loads(request.body)
+        allotment_id = data.get("allotment_id")
+        new_status = data.get("new_status")
+        user_data = data.get("user_data")
+        user_selected_list = [item.get("userSelected") for item in user_data]  # Get the list of userSelected values
 
+        print("userSelected List:", user_selected_list)
+
+        print("userData:", user_data)
         try:
-
             for item in user_data:
-                user_id    = item.get("userId")
-                field      = item.get("field")
-                new_value  = item.get("newValue")
+                user_id = item.get("userId")
+                field = item.get("field")
+                new_value = item.get("newValue")
+                selected_user = item.get("userSelected")
 
-                user = allotment_user_db.objects.get (
+                # Use filter instead of get to handle the case where multiple objects are returned
+                users = allotment_user_db.objects.filter(
+                    user_id=user_id,
+                    allotment_id=allotment_id
+                )
 
-                    user_id        = user_id, 
-                    allotment_id   = allotment_id
-                                                    )
-                # if selected_user_id(
+                for user in users:
+                    if field == "user_time" and request.session.get("managerId") is not None:
+                        user.user_time = new_value
 
-                # )
+                    if field == "user_alloted":
+                        user.user_alloted = new_value
 
-                if (
-                    field == "user_time"
-                    and request.session.get("managerId") is not None
-                ):
-                    user.user_time = new_value
+                    if selected_user is not None:
+                        selected_user_obj = user_db.objects.get(id=selected_user)
+                        user.user = selected_user_obj
 
-                if field == "user_alloted":
-                    user.user_alloted = new_value
-                user.save()
+                    user.save()
 
             if new_status and request.session.get("adminId") is not None:
-                allotment         = allotment_db.objects.get(id=allotment_id)
-                allotment.status  = new_status
+                allotment = allotment_db.objects.get(id=allotment_id)
+                allotment.status = new_status
                 allotment.save()
 
-            response_data   = {
-
-                               "success": True
-
-                              }
+            response_data = {
+                "success": True
+            }
 
             return JsonResponse(response_data)
 
@@ -1048,15 +1090,17 @@ def update_allotment(request):
                 print(f"Error: {e}")
 
             response_data = {
-
-                             "error": str(e)
-
-                            }
+                "error": str(e)
+            }
 
             return JsonResponse(response_data, status=400)
 
     response_data = {"error": "Invalid request method"}
     return JsonResponse(response_data, status=405)
+
+
+
+
 
 
 

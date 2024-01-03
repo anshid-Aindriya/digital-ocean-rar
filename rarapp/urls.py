@@ -28,13 +28,12 @@ urlpatterns = [
     path('update-project/', views.update_project, name='update-project'),
     path('toggle_favorite/', views.toggle_favorite, name='toggle_favorite'),
     path('autocomplete-users/', views.autocomplete_users, name='autocomplete-users'),
-    path('get_users_for_project/<int:project_id>/', views.get_users_for_project, name='get_users_for_project'),
-
-
+   
     path('add-timesheet/',views.addTimesheet,name='add-timesheet'),
     path('timesheet/',views.timesheet_view,name='timesheet'),
     path('timesheet-delete/', views.deleteTimesheet, name='timesheet-delete'),
     path('edit-timesheet/<int:timesheet_id>/', views.editTimesheet, name='edit-timesheet'),
+    path('get_users_for_project/<int:project_id>/', views.get_users_for_project, name='get_users_for_project'),
 
     path('allotment/<int:project_id>/',views.Allotment,name='allotment'),
     path('update-allotment/', views.update_allotment, name='update-allotment'),
