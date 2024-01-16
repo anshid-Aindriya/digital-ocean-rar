@@ -26,7 +26,7 @@ SECRET_KEY = os.getenv('SECRET_KEY','django-insecure-uom5r3_x@wktnclx(hh@m)+##jv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','64.227.155.89','ams.aindriya.co.in']
+ALLOWED_HOSTS = ['127.0.0.1','64.227.155.89','ams.aindriya.co.in']
 
 
 # Application definition
@@ -94,6 +94,8 @@ DATABASES = {
         'PORT':''
     }
   }
+
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',

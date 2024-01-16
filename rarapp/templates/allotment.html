@@ -261,34 +261,41 @@ function createCard(allotmentId, users, allotment) {
 
   // Get the user names from the Django template context
   const userNames = {{ user_info|safe }};
+  console.log("usN:",userNames)
 
 
 // Left column content
-const userRows = users.map((user, index) => `
-  <div class="row mt-2" data-allotment-id="${allotmentId}">
-    <div class="col-md-2 mx-4">${index + 1}</div>
-    <div class="col-md-4 inline-container">
-      <a href=""><i class="bi bi-person-fill-x" style="display:none; color:red;margin-left: -64px;"></i></a>
-      <img class="ellipse" src="/static/assets/img/836.jpg" alt="User Image" width="26" height="26" />
-      <span class="user-name" data-user-id="${user.id}" disabled>${user.name}</span>
-      <select class="user-list-select" style="display: none;">
-       <option  value="${user.id}" selected>${user.name}</option> 
-        {% for user_info_item in user_info %}
-        <option value="{{ user_info_item.id }}">{{ user_info_item.name }}</option>
-        {% endfor %}
-      </select>
+const userRows = users.map((user, index) => {
+  const currentUserOption = `<option value="${user.id}" selected>${user.name}</option>`;
+  const otherUserOptions = userNames
+    .filter(userName => userName.id !== user.id)
+    .map(userName => `<option value="${userName.id}">${userName.name}</option>`)
+    .join("");
+
+  return `
+    <div class="row mt-2" data-allotment-id="${allotmentId}">
+      <div class="col-md-2 mx-4">${index + 1}</div>
+      <div class="col-md-4 inline-container">
+        <a href=""><i class="bi bi-person-fill-x" style="display:none; color:red;margin-left: -64px;"></i></a>
+        <img class="ellipse" src="/static/assets/img/836.jpg" alt="User Image" width="26" height="26" />
+        <span class="user-name" data-user-id="${user.id}" disabled>${user.name}</span>
+        <select class="user-list-select" style="display: none;">
+          ${currentUserOption}
+          ${otherUserOptions}
+        </select>
+      </div>
+      <div class="col-md-2">
+        <span class="editable-value user_time" name="user_time_${index}" data-user-id="${user.id}" data-field="user_time">${user.user_time}</span>
+        <input type="number" class="editable-input user_time" style="display: none" data-user-id="${user.id}" data-field="user_time" />
+      </div>
+      <div class="col-md-2">
+        <span class="editable-value user_alloted" name="user_alloted_${index}" data-user-id="${user.id}" data-field="user_alloted">${user.user_alloted}</span>
+        <input type="number" class="editable-input user_alloted" style="display: none" data-user-id="${user.id}" data-field="user_alloted" />
+      </div>
     </div>
-    <div class="col-md-2">
-      <span class="editable-value user_time" name="user_time_${index}" data-user-id="${user.id}" data-field="user_time">${user.user_time}</span>
-      <input type="number" class="editable-input user_time" style="display: none" data-user-id="${user.id}" data-field="user_time" />
-    </div>
-    <div class="col-md-2">
-      <span class="editable-value user_alloted" name="user_alloted_${index}" data-user-id="${user.id}" data-field="user_alloted">${user.user_alloted}</span>
-      <input type="number" class="editable-input user_alloted" style="display: none" data-user-id="${user.id}" data-field="user_alloted" />
-    </div>
-  </div>
-  <hr />
-`).join("");
+    <hr />
+  `;
+}).join("");
 
 leftColumn.innerHTML = `
   <input type="hidden" name="allotment_id" class="allotmentID" value="${allotmentId}" />

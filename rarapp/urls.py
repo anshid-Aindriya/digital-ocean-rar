@@ -18,6 +18,11 @@ urlpatterns = [
     path('get-user-data/',views.get_user_data, name='get-user-data'),
     path('update-user/', views.update_user, name='update-user'),
     path('user-delete/', views.deleteUser, name='user-delete'),
+
+    path('list-user-workbook/',views.userListWorkBook,name="list-user-workbook"),
+    # path('get-user-workbook/<int:user_id>/',views.get_user_workbook_view, name='get-user-workbook'),
+    path('user/<int:user_id>/',views.userWorkBook, name='user_workbook'),
+
   
     path('',views.dashboard,name='dashboard' ),
     path('main/<int:project_id>/',views.mainLayouts,name='main'),

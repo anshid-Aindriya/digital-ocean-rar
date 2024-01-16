@@ -309,11 +309,11 @@ def addUser(request):
             messages.success(request, "User successfully added.")
             return redirect("dashboard")
 
-        users   = user_db.objects.all().order_by("name")
+        users = user_db.objects.all().order_by("name")
 
         context = {
-                     "user_data": users
-                  }
+            "user_data": users
+        }
 
         return render(request, "index.html", context)
     else:
@@ -387,6 +387,8 @@ def deleteUser(request):
             return redirect("dashboard")
     else:
         return render(request, "login.html")
+
+
 
 
 def autocomplete_users(request):
@@ -1043,11 +1045,7 @@ def update_allotment(request):
         allotment_id = data.get("allotment_id")
         new_status = data.get("new_status")
         user_data = data.get("user_data")
-        user_selected_list = [item.get("userSelected") for item in user_data]  # Get the list of userSelected values
 
-        print("userSelected List:", user_selected_list)
-
-        print("userData:", user_data)
         try:
             for item in user_data:
                 user_id = item.get("userId")
@@ -1504,3 +1502,151 @@ def mainLayouts(request, project_id):
         return render(request, "project-dashboard.html", context)
     else:
         return render(request, "login.html")
+
+
+
+def format_minutes_as_time(minutes):
+    # Convert total minutes to hours and minutes
+    hours, minutes = divmod(minutes, 60)
+    return f"{int(hours)}h:{int(minutes)}m"
+
+
+def userListWorkBook(request):
+    users = user_db.objects.all().order_by('name')
+
+    # Set the first user as the default user
+    default_user = users.first()
+
+    projects = project_db.objects.filter(users=default_user)
+    project_details = []
+    total_remaining_minutes = 0  # Track total remaining minutes for the user
+
+    for project in projects:
+        approved_allotments = allotment_db.objects.filter(project=project, status="APPROVED")
+        user_alloted_sum = 0
+        worked_time_sum_minutes = 0
+
+        timesheet_entries = set()
+        allotment_user_entries = set()
+
+        for approved_allotment in approved_allotments:
+            timesheets = timesheet_db.objects.filter(user=default_user, project=project)
+            allotment_users = allotment_user_db.objects.filter(allotment=approved_allotment, user=default_user)
+
+            for timesheet in timesheets:
+                if timesheet.id not in timesheet_entries:
+                    worked_time_sum_minutes += convert_time_to_minutes(timesheet.worked_time)
+                    timesheet_entries.add(timesheet.id)
+
+            for allotment_user in allotment_users:
+                if allotment_user.id not in allotment_user_entries:
+                    user_alloted_sum += float(allotment_user.user_alloted)
+                    allotment_user_entries.add(allotment_user.id)
+
+        # Calculate remaining minutes after subtracting worked time from allotted time
+        remaining_minutes = max(0, user_alloted_sum * 60 - worked_time_sum_minutes)
+
+        # Track total remaining minutes for the user across all projects
+        total_remaining_minutes += remaining_minutes
+
+        # Calculate hours and minutes for the formatted result
+        hours, minutes = divmod(remaining_minutes, 60)
+
+        # Format the subtraction result as "1h:10m"
+        formatted_subtraction_result = f"{int(hours)}h:{int(minutes)}m"
+
+        project_details.append({
+            'project_title': project.title,
+            'user_alloted_sum': int(user_alloted_sum),  # Convert to int to remove decimal
+            'worked_time_sum_hours': int(worked_time_sum_minutes // 60),
+            'worked_time_sum_minutes': int(worked_time_sum_minutes % 60),
+            'formatted_subtraction_result': formatted_subtraction_result
+        })
+
+    # Calculate total hours and minutes for the formatted result
+    total_hours, total_minutes = divmod(total_remaining_minutes, 60)
+
+    # Format the total remaining result as "1h:10m"
+    total_remaining_result = f"{int(total_hours)}h:{int(total_minutes)}m"
+   
+
+    context = {
+        'users': users,
+        'selected_user': default_user,
+        'project_details': project_details,
+        'total_remaining_result': total_remaining_result
+    }
+
+    return render(request, 'workbook.html', context)
+
+
+
+
+def userWorkBook(request, user_id):
+    selected_user = get_object_or_404(user_db, id=user_id)
+
+    # Fetch projects for the selected user
+    projects = project_db.objects.filter(users=selected_user)
+
+    # List to store dictionaries for each project
+    project_details = []
+    total_remaining_minutes = 0  # Track total remaining minutes for the user
+
+    for project in projects:
+        approved_allotments = allotment_db.objects.filter(project=project, status="APPROVED")
+        user_alloted_sum = 0
+        worked_time_sum_minutes = 0
+
+        timesheet_entries = set()
+        allotment_user_entries = set()
+
+        for approved_allotment in approved_allotments:
+            timesheets = timesheet_db.objects.filter(user=selected_user, project=project)
+            allotment_users = allotment_user_db.objects.filter(allotment=approved_allotment, user=selected_user)
+
+            for timesheet in timesheets:
+                if timesheet.id not in timesheet_entries:
+                    worked_time_sum_minutes += convert_time_to_minutes(timesheet.worked_time)
+                    timesheet_entries.add(timesheet.id)
+
+            for allotment_user in allotment_users:
+                if allotment_user.id not in allotment_user_entries:
+                    user_alloted_sum += float(allotment_user.user_alloted)
+                    allotment_user_entries.add(allotment_user.id)
+
+        # Calculate remaining minutes after subtracting worked time from allotted time
+        remaining_minutes = max(0, user_alloted_sum * 60 - worked_time_sum_minutes)
+
+        # Track total remaining minutes for the user across all projects
+        total_remaining_minutes += remaining_minutes
+
+      # Calculate hours and minutes for the formatted result
+        hours, minutes = divmod(remaining_minutes, 60)
+
+        # Format the subtraction result without decimal points for hours
+        formatted_subtraction_result = f"{int(hours)}h:{int(minutes)}m"
+
+
+
+        project_details.append({
+            'project_title': project.title,
+            'user_alloted_sum': int(user_alloted_sum),  # Convert to int to remove decimal
+            'worked_time_sum_hours': int(worked_time_sum_minutes // 60),
+            'worked_time_sum_minutes': int(worked_time_sum_minutes % 60),
+            'formatted_subtraction_result': formatted_subtraction_result
+        })
+
+    # Calculate total hours and minutes for the formatted result
+    total_hours, total_minutes = divmod(total_remaining_minutes, 60)
+
+    # Format the total remaining result as "1h:10m"
+    total_remaining_result = f"{int(total_hours)}h:{int(total_minutes)}m"
+
+    context = {
+        'users': user_db.objects.all().order_by('name'),
+        'selected_user': selected_user,
+        'project_details': project_details,
+        'total_remaining_result': total_remaining_result,
+    }
+
+    return render(request, 'workbook.html', context)

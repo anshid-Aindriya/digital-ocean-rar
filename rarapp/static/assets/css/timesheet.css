@@ -195,15 +195,14 @@ box-shadow: 0px 1px 9px 0px rgba(0, 0, 0, 0.15) inset;
     padding-top: 12%;
   
 }
-.time-subtext
-{
+.time-subtext{
     font-family: DM Sans;
-font-size: 22px;
-font-weight: 700;
-line-height: 20px;
-letter-spacing: 0px;
-color: #4776E6;
-padding-left: 22%;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0px;
+    color: #4776E6;
+    padding-left: 22%;
 }
 
 .custom-button {

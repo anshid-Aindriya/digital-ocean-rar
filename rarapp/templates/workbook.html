@@ -1,0 +1,135 @@
+{% extends "layouts/topbar.html" %}
+{% load static %}
+{% block content %}
+<link href="{% static 'assets/css/workbook.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<div>
+  {% if messages %}
+      {% for message in messages %}
+          {% if message.tags == 'error' %}
+              <div class="alert {% if message.tags %}alert-danger{% endif %}" role="alert">{{ message }}</div>
+          {% else %}
+              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+          {% endif %}
+      {% endfor %}
+  {% endif %}
+</div>
+
+
+<section class="section dashboard">
+    <div class="pagetitle">
+              <li class="nav items active"><a href="{% url 'dashboard' %}" style="text-decoration:none" class="mx-4 text-back"> < Back to home</a>
+              <span class=" text-work">Workbook</span>
+            </li>
+      </div>
+    <!-- End Page Title -->
+
+      <div class="row">
+        <div class="col-lg-3 user-col">
+            <div class="custom-card">
+                <div class="card" style="border:none;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0 user-heading">Users</h5>
+                        </div>
+                        {% for user in users %}
+                        <a style="text-decoration:none;" class="{% if user == selected_user %}user-link {% endif %}" href="{% url 'user_workbook' user.id %}">
+                            <div class="Group37 mb-3 d-flex align-items-center">
+                                <div class="col-2" style="width: 5.666667%;">
+                                    {% if user.profile_image %}
+                                    <img src="{{ user.profile_image.url }}" alt="{{ user.name }}" class="rounded-circle mt-2" style="width: 30px; height: 30px;">
+                                    {% else %}
+                                    <img src="{% static 'assets/img/836.jpg' %}" alt="{{ user.name }}" class="rounded-circle mt-2" style="width: 30px; height: 30px;">
+                                    {% endif %}
+                                </div>
+                                <div class="col-10">
+                                    <span class="{% if user == selected_user %} mg mt-2 {% else %}mx-4 mt-2 {% endif %} user-name " title="{{ user.name }}">
+                                        {{ user.name|truncatechars:20  }}
+                                    </span>
+                                    
+                                </div>
+                            </div>
+                            <hr>
+                        </a>
+                        {% endfor %}
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-lg-8 mx-5 mt-3">
+            {% if selected_user %}
+            <div class="row">
+                <div class="col-md-4">
+                <span class="manage-text">{{ selected_user.name }}- Time Management</span>
+            </div>
+                <div class="col-md-4">
+                    <div class="total-time">
+                        <div class="time-text d-flex justify-content-center">Total Remaining Time</div>
+                        <div class="time-subtext">{{ total_remaining_result }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive mt-3">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="head-style">Project</th>
+                                    <th class="head-style">Requested Time</th>
+                                    <th class="head-style">Used Time</th>
+                                    <th class="head-style">Remaining Time</th>
+                                </tr>
+                            </thead>
+                            <tbody class="mt-5">
+                                {% for project_detail in project_details %}
+                                <tr>
+                                    <td>
+                                        <div class="prof-img rounded-circle">
+                                            <span class="initials">{{ project_detail.project_title|slice:":2" }}</span>
+                                        </div>
+                                        <div class="title-container">
+                                            <span class="proj-title">{{ project_detail.project_title|truncatechars:25 }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="proj-title">{{ project_detail.user_alloted_sum }} h</td>
+                                    <td class="proj-title">{{ project_detail.worked_time_sum_hours }}h:{{ project_detail.worked_time_sum_minutes }}m</td>
+                                    <td class="proj-title">{{ project_detail.formatted_subtraction_result }}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <a href="#" class="" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+  </section>
+  
+
+
+
+
+
+
+
+  <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- jQuery UI CSS -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<!-- jQuery UI JS -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+{% endblock %}

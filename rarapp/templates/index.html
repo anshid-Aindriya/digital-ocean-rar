@@ -215,6 +215,11 @@
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5 class="mb-0 user-heading">Users</h5>
+              <button class="workbook" id="workbookBtn">
+                <img class="#" src="{% static 'assets/img/workbook.svg' %}" alt="icon">
+                <span class="workbook-text">Workbook</span>
+              </button>
+
             </div>
             {% for user in user_data %}
             <div class="Group37 mb-3 d-flex align-items-center">
@@ -532,7 +537,16 @@
 
 
 
+<script>
+  // Get the button element by its ID
+  var workbookBtn = document.getElementById('workbookBtn');
 
+  // Add a click event listener to the button
+  workbookBtn.addEventListener('click', function() {
+    // Redirect to the desired URL
+    window.location.href = '/list-user-workbook/';
+  });
+</script>
 
   
 
