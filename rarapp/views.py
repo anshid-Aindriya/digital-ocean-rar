@@ -1540,13 +1540,8 @@ def userListWorkBook(request):
 
             for allotment_user in allotment_users:
                 if allotment_user.id not in allotment_user_entries:
-                    if allotment_user.user_alloted:
-                        try:
-                            user_alloted_sum += float(allotment_user.user_alloted)
-                        except ValueError as e:
-                            print(f"Error converting to float: {e}, user_alloted value: {allotment_user.user_alloted}")
+                    user_alloted_sum += float(allotment_user.user_alloted)
                     allotment_user_entries.add(allotment_user.id)
-
 
         # Calculate remaining minutes after subtracting worked time from allotted time
         remaining_minutes = max(0, user_alloted_sum * 60 - worked_time_sum_minutes)
