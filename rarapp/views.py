@@ -1611,7 +1611,16 @@ def userWorkBook(request, user_id):
 
             for allotment_user in allotment_users:
                 if allotment_user.id not in allotment_user_entries:
-                    user_alloted_sum += float(allotment_user.user_alloted)
+                    user_alloted_value = allotment_user.user_alloted.strip() if allotment_user.user_alloted else None
+
+                    if user_alloted_value:
+                        try:
+                            user_alloted_sum += float(user_alloted_value)
+                        except ValueError as e:
+                            print(f"Error converting to float: {e}, user_alloted value: {user_alloted_value}")
+                    else:
+                        print("Warning: Empty or whitespace user_alloted value encountered.")
+
                     allotment_user_entries.add(allotment_user.id)
 
         # Calculate remaining minutes after subtracting worked time from allotted time
