@@ -694,12 +694,12 @@ def timesheet_view(request):
 
         unique_user_ids          = set()
 
-        timesheet_data           = timesheet_db.objects.all().order_by("-date")
+        timesheet_data = timesheet_db.objects.all().order_by("-date", "-created_at")
 
         project_data             = project_db.objects.all()
         user_data                = user_db.objects.all()
 
-        items_per_page           = 10
+        items_per_page           = 50
         
 
         for project in project_data:
